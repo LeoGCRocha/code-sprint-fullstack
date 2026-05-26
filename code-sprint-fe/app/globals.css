@@ -1,0 +1,55 @@
+@import "tailwindcss";
+
+@theme inline {
+  /* Primary scale — Warm Coral */
+  --color-primary-50: #fdf0e8;
+  --color-primary-100: #f9d8c2;
+  --color-primary-200: #fbc5a5;
+  --color-primary-300: #ffb184;
+  --color-primary-400: #ff9461;
+  --color-primary-500: #ff8552;
+  --color-primary-600: #f7672f;
+  --color-primary-700: #cb4f23;
+  --color-primary-800: #a34220;
+  --color-primary-900: #83371f;
+
+  /* Neutral scale — Warm Sand */
+  --color-neutral-50: #f8f5f0;
+  --color-neutral-100: #f4ece1;
+  --color-neutral-200: #ede0cd;
+  --color-neutral-300: #e2d0b7;
+  --color-neutral-400: #d8c2a4;
+  --color-neutral-500: #bfa487;
+  --color-neutral-600: #9a7f68;
+  --color-neutral-700: #745f4e;
+  --color-neutral-800: #4f3f35;
+  --color-neutral-900: #281f1a;
+
+  /* Semantic */
+  --color-background: #f8e6cf;
+  --color-surface: #ffffff;
+  --color-border: #e9d7c4;
+  --color-text-primary: #17110d;
+  --color-text-secondary: #6f5b4e;
+  --color-text-muted: #332722;
+
+  /* Dark surface */
+  --color-surface-dark: #1a120a;
+  --color-surface-dark-elevated: #251a12;
+
+  --font-sans: var(--font-inter);
+}
+
+body {
+  @apply bg-background text-text-primary font-sans;
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
