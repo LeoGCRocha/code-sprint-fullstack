@@ -8,6 +8,7 @@ type ContainerProps = {
   icon?: ReactNode;
   title?: string;
   variant?: Variant;
+  className?: string;
 };
 
 const variantStyles = {
@@ -23,11 +24,15 @@ const variantStyles = {
   },
 };
 
-export function Container({ children, icon, title, variant = "light" }: ContainerProps) {
+export function Container({ children, icon, title, variant = "light", className }: ContainerProps) {
   const styles = variantStyles[variant];
   return (
     <div
-      className={twMerge("mt-10 flex min-h-50 w-full max-w-md flex-col gap-0.5 rounded-2xl p-5", styles.container)}
+      className={twMerge(
+        "mt-10 flex min-h-50 w-full max-w-md flex-col gap-0.5 rounded-2xl p-5",
+        styles.container,
+        className
+      )}
     >
       {icon && (
         <div className={twMerge("h-fit w-fit rounded-lg p-3", styles.iconWrapper)}>{icon}</div>

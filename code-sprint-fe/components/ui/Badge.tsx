@@ -1,27 +1,30 @@
 import { twMerge } from "tailwind-merge";
 
-type Difficulty = "easy" | "medium" | "hard";
+export type BadgeVariant = "blue" | "yellow" | "green" | "red";
 
-const difficultyStyles: Record<Difficulty, string> = {
-  easy: "bg-green-100 text-green-700",
-  medium: "bg-yellow-100 text-yellow-700",
-  hard: "bg-red-100 text-red-700",
-};
-
-const difficultyLabel: Record<Difficulty, string> = {
-  easy: "Easy",
-  medium: "Medium",
-  hard: "Hard",
+const variantStyles: Record<BadgeVariant, string> = {
+  blue: "bg-blue-100 text-blue-700",
+  yellow: "bg-yellow-100 text-yellow-700",
+  green: "bg-green-100 text-green-700",
+  red: "bg-red-100 text-red-700",
 };
 
 interface BadgeProps {
-  difficulty: Difficulty;
+  variant: BadgeVariant;
+  children: React.ReactNode;
+  className?: string;
 }
 
-export function Badge({ difficulty }: BadgeProps) {
+export function Badge({ variant, children, className }: BadgeProps) {
   return (
-    <span className={twMerge("rounded-full px-3 py-1 text-sm font-semibold", difficultyStyles[difficulty])}>
-      {difficultyLabel[difficulty]}
+    <span
+      className={twMerge(
+        "rounded-full px-3 py-1 text-sm font-semibold",
+        variantStyles[variant],
+        className
+      )}
+    >
+      {children}
     </span>
   );
 }
