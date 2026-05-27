@@ -1,21 +1,9 @@
-export type Problem = {
-  id: string;
-  title: string;
-  difficulty: "easy" | "medium" | "hard";
-  tags: string[];
-  solvedCount: number;
-};
+import type { Problem } from "./types";
 
 export const problems: Problem[] = [
   { id: "1", title: "Two Sum", difficulty: "easy", tags: ["Mathematical"], solvedCount: 12400 },
   { id: "2", title: "Valid Parentheses", difficulty: "easy", tags: ["Strings"], solvedCount: 9800 },
-  {
-    id: "3",
-    title: "Longest Substring",
-    difficulty: "medium",
-    tags: ["Strings"],
-    solvedCount: 7200,
-  },
+  { id: "3", title: "Longest Substring", difficulty: "medium", tags: ["Strings"], solvedCount: 7200 },
   { id: "4", title: "3Sum", difficulty: "medium", tags: ["Mathematical"], solvedCount: 5100 },
   {
     id: "5",

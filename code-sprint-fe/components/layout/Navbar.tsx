@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { Button } from "@/components/Button";
-import { Logo } from "@/components/Logo";
+import { Button } from "@/components/ui/Button";
+import { Logo } from "@/components/layout/Logo";
 
 export function Navbar() {
   return (

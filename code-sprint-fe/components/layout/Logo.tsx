@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { TypeWriter } from "@/components/TypeWriter";
+import { TypeWriter } from "@/components/layout/TypeWriter";
 
 export function Logo() {
   return (

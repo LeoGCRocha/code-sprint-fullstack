@@ -1,5 +1,5 @@
-import { TrophyIcon } from "lucide-react";
 import { ReactNode } from "react";
+import { twMerge } from "tailwind-merge";
 
 type Variant = "light" | "dark";
 
@@ -27,12 +27,14 @@ export function Container({ children, icon, title, variant = "light" }: Containe
   const styles = variantStyles[variant];
   return (
     <div
-      className={`${styles.container} mt-10 flex min-h-50 w-full max-w-md flex-col gap-0.5 rounded-2xl p-5`}
+      className={twMerge("mt-10 flex min-h-50 w-full max-w-md flex-col gap-0.5 rounded-2xl p-5", styles.container)}
     >
-      <div className={`${styles.iconWrapper} h-fit w-fit rounded-lg p-3`}>
-        {icon ?? <TrophyIcon />}
-      </div>
-      <h2 className={`${styles.title} mb-4 text-3xl leading-tight font-black`}>{title}</h2>
+      {icon && (
+        <div className={twMerge("h-fit w-fit rounded-lg p-3", styles.iconWrapper)}>{icon}</div>
+      )}
+      {title && (
+        <h2 className={twMerge("mb-4 text-3xl leading-tight font-black", styles.title)}>{title}</h2>
+      )}
       {children}
     </div>
   );

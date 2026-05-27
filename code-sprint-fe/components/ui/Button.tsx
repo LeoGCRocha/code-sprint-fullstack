@@ -1,4 +1,5 @@
 import { ButtonHTMLAttributes } from "react";
+import { twMerge } from "tailwind-merge";
 
 type Variant = "primary" | "outline" | "ghost";
 type Size = "sm" | "md" | "lg";
@@ -23,13 +24,18 @@ const sizes: Record<Size, string> = {
 export function Button({
   variant = "primary",
   size = "md",
-  className = "",
+  className,
   children,
   ...props
 }: ButtonProps) {
   return (
     <button
-      className={`cursor-pointer rounded-full font-semibold transition-colors ${variants[variant]} ${sizes[size]} ${className}`}
+      className={twMerge(
+        "cursor-pointer rounded-full font-semibold transition-colors",
+        variants[variant],
+        sizes[size],
+        className
+      )}
       {...props}
     >
       {children}

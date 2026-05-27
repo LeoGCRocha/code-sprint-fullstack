@@ -12,11 +12,9 @@ export function TypeWriter({ text, speed = 100 }: TypeWriterProps) {
 
   useEffect(() => {
     if (displayed.length >= text.length) return;
-
     const timeout = setTimeout(() => {
       setDisplayed(text.slice(0, displayed.length + 1));
     }, speed);
-
     return () => clearTimeout(timeout);
   }, [displayed, text, speed]);
 

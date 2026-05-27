@@ -1,6 +1,6 @@
-import type { Problem } from "@/model/Problem";
+import { twMerge } from "tailwind-merge";
 
-type Difficulty = Problem["difficulty"];
+type Difficulty = "easy" | "medium" | "hard";
 
 const difficultyStyles: Record<Difficulty, string> = {
   easy: "bg-green-100 text-green-700",
@@ -20,9 +20,7 @@ interface BadgeProps {
 
 export function Badge({ difficulty }: BadgeProps) {
   return (
-    <span
-      className={`${difficultyStyles[difficulty]} rounded-full px-3 py-1 text-sm font-semibold`}
-    >
+    <span className={twMerge("rounded-full px-3 py-1 text-sm font-semibold", difficultyStyles[difficulty])}>
       {difficultyLabel[difficulty]}
     </span>
   );
