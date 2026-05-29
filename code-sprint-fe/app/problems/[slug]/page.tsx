@@ -8,7 +8,7 @@ import { notFound } from "next/navigation";
 
 export default async function ProblemPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const problem = problems.find((p) => p.id === slug);
+  const problem = problems.find((p) => p.slug === slug);
 
   if (!problem) {
     notFound();

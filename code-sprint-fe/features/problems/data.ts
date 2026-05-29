@@ -3,6 +3,7 @@ import type { Problem } from "./types";
 export const problems: Problem[] = [
   {
     id: "1",
+    slug: "two-sum",
     title: "Two Sum",
     difficulty: "easy",
     tags: ["Mathematical"],
@@ -33,6 +34,7 @@ export const problems: Problem[] = [
   },
   {
     id: "2",
+    slug: "valid-parentheses",
     title: "Valid Parentheses",
     difficulty: "easy",
     tags: ["Strings"],
@@ -63,6 +65,7 @@ export const problems: Problem[] = [
   },
   {
     id: "3",
+    slug: "longest-substring-without-repeating-characters",
     title: "Longest Substring Without Repeating Characters",
     difficulty: "medium",
     tags: ["Strings"],
@@ -90,6 +93,7 @@ export const problems: Problem[] = [
   },
   {
     id: "4",
+    slug: "3sum",
     title: "3Sum",
     difficulty: "medium",
     tags: ["Mathematical"],
@@ -112,6 +116,7 @@ export const problems: Problem[] = [
   },
   {
     id: "5",
+    slug: "median-of-two-sorted-arrays",
     title: "Median of Two Sorted Arrays",
     difficulty: "hard",
     tags: ["Logical"],
@@ -139,6 +144,7 @@ export const problems: Problem[] = [
   },
   {
     id: "6",
+    slug: "trapping-rain-water",
     title: "Trapping Rain Water",
     difficulty: "hard",
     tags: ["Geometrics"],
@@ -161,6 +167,7 @@ export const problems: Problem[] = [
   },
   {
     id: "7",
+    slug: "binary-search",
     title: "Binary Search",
     difficulty: "easy",
     tags: ["Logical"],
@@ -192,6 +199,7 @@ export const problems: Problem[] = [
   },
   {
     id: "8",
+    slug: "merge-intervals",
     title: "Merge Intervals",
     difficulty: "medium",
     tags: ["Mathematical"],
@@ -217,6 +225,7 @@ export const problems: Problem[] = [
   },
   {
     id: "9",
+    slug: "word-search",
     title: "Word Search",
     difficulty: "medium",
     tags: ["Strings", "Logical"],
@@ -242,6 +251,7 @@ export const problems: Problem[] = [
   },
   {
     id: "10",
+    slug: "minimum-window-substring",
     title: "Minimum Window Substring",
     difficulty: "hard",
     tags: ["Strings"],

@@ -10,6 +10,7 @@ export type Example = {
 
 export type Problem = {
   id: string;
+  slug: string;
   title: string;
   difficulty: Difficulty;
   tags: string[];
