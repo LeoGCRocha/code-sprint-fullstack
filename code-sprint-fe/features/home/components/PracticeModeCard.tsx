@@ -1,6 +1,7 @@
 import { DumbbellIcon } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
+import Link from "next/link";
 
 export function PracticeModeCard() {
   return (
@@ -19,7 +20,9 @@ export function PracticeModeCard() {
           </span>
         ))}
       </div>
-      <Button>Explore problems</Button>
+      <Button>
+        <Link href="/problems">Explore problems</Link>
+      </Button>
     </Container>
   );
 }

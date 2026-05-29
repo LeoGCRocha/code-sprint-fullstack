@@ -14,13 +14,13 @@ export function ProblemFilter() {
   const [selection, setSelection] = useState<FilterDifficulty>("all");
 
   return (
-    <div className="mx-auto flex w-fit flex-row">
+    <div className="mb-4 flex flex-row flex-wrap gap-1">
       {filters.map(({ label, value }) => (
         <button
           key={value}
           onClick={() => setSelection(value)}
-          className={`m-2 cursor-pointer rounded-full p-2 transition-colors ${
-            selection === value ? "bg-black text-white" : "bg-neutral-100 text-neutral-700"
+          className={`cursor-pointer rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
+            selection === value ? "bg-primary-600 text-white" : "bg-neutral-100 text-neutral-700 hover:bg-neutral-200"
           }`}
         >
           {label}

@@ -11,12 +11,16 @@ const languages = [
   { label: "C++", value: "cpp", monacoId: "cpp" },
 ];
 
-export function CodeSolutionPanel() {
+interface CodeSolutionPanelProps {
+  fillHeight?: boolean;
+}
+
+export function CodeSolutionPanel({ fillHeight = false }: CodeSolutionPanelProps) {
   const [language, setLanguage] = useState(languages[0]);
   const [code, setCode] = useState("");
 
   return (
-    <>
+    <div className={fillHeight ? "flex h-full flex-col" : "flex flex-col"}>
       <div className="mt-3 flex items-center justify-between rounded-t-xl bg-neutral-800 px-4 py-2">
         <span className="text-sm font-semibold text-white">{language.label}</span>
         <div className="relative">
@@ -33,15 +37,26 @@ export function CodeSolutionPanel() {
         </div>
       </div>
 
-      <CodeSolution
-        language={language.monacoId}
-        value={code}
-        onChange={setCode}
-      />
+      {fillHeight ? (
+        <div className="min-h-0 flex-1">
+          <CodeSolution
+            language={language.monacoId}
+            value={code}
+            onChange={setCode}
+            height="100%"
+          />
+        </div>
+      ) : (
+        <CodeSolution
+          language={language.monacoId}
+          value={code}
+          onChange={setCode}
+        />
+      )}
 
-      <Button className="mt-2 flex items-center justify-center gap-2 p-4">
+      <Button className="mt-2 flex shrink-0 items-center justify-center gap-2 p-4">
         <SendIcon /> Submit Solution
       </Button>
-    </>
+    </div>
   );
 }

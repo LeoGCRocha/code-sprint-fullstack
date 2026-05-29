@@ -1,6 +1,8 @@
 import { StatItem } from "@/components/ui/StatItem";
 
 export function UserRank() {
+  // TODO: Implement serach BAR
+
   return (
     <div className="m-2 flex flex-col gap-2 rounded-lg bg-white p-2">
       <h2 className="text-2xl font-black">Your Progress</h2>
