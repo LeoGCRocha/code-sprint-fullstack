@@ -10,6 +10,26 @@ export const problems: Problem[] = [
     estimatedTime: "10 min",
     points: 50,
     status: "review",
+    description:
+      "Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target. You may assume that each input would have exactly one solution, and you may not use the same element twice.",
+    notes: ["Each input has exactly one solution.", "You may not use the same element twice."],
+    inputFormat: [
+      "First line: integer N (size of array)",
+      "Second line: N space-separated integers",
+      "Third line: integer target",
+    ],
+    constraints: ["2 ≤ N ≤ 10^4", "-10^9 ≤ nums[i] ≤ 10^9", "-10^9 ≤ target ≤ 10^9"],
+    examples: [
+      {
+        input: "nums = [2, 7, 11, 15]\ntarget = 9",
+        output: "[0, 1]",
+        explanation: "nums[0] + nums[1] = 2 + 7 = 9",
+      },
+      {
+        input: "nums = [3, 2, 4]\ntarget = 6",
+        output: "[1, 2]",
+      },
+    ],
   },
   {
     id: "2",
@@ -20,6 +40,26 @@ export const problems: Problem[] = [
     estimatedTime: "15 min",
     points: 50,
     status: "continue",
+    description:
+      "Given a string s containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid. An input string is valid if open brackets are closed by the same type of brackets, and in the correct order.",
+    notes: ["Empty string is considered valid."],
+    inputFormat: ["Single line: string s"],
+    constraints: ["1 ≤ s.length ≤ 10^4", "s consists of parentheses only '()[]{}'"],
+    examples: [
+      {
+        input: 's = "()"',
+        output: "true",
+      },
+      {
+        input: 's = "()[]{}"',
+        output: "true",
+      },
+      {
+        input: 's = "(]"',
+        output: "false",
+        explanation: "Mismatched bracket types.",
+      },
+    ],
   },
   {
     id: "3",
@@ -30,6 +70,23 @@ export const problems: Problem[] = [
     estimatedTime: "20 min",
     points: 100,
     status: "start",
+    description:
+      "Given a string s, find the length of the longest substring without repeating characters.",
+    notes: ["A substring is a contiguous non-empty sequence of characters within a string."],
+    inputFormat: ["Single line: string s"],
+    constraints: ["0 ≤ s.length ≤ 5 × 10^4", "s consists of English letters, digits, symbols and spaces"],
+    examples: [
+      {
+        input: 's = "abcabcbb"',
+        output: "3",
+        explanation: 'The answer is "abc", with the length of 3.',
+      },
+      {
+        input: 's = "bbbbb"',
+        output: "1",
+        explanation: 'The answer is "b", with the length of 1.',
+      },
+    ],
   },
   {
     id: "4",
@@ -40,6 +97,18 @@ export const problems: Problem[] = [
     estimatedTime: "25 min",
     points: 100,
     status: "start",
+    description:
+      "Given an integer array nums, return all the triplets [nums[i], nums[j], nums[k]] such that i != j, i != k, j != k, and nums[i] + nums[j] + nums[k] == 0. The solution set must not contain duplicate triplets.",
+    notes: ["Solution set must not contain duplicate triplets."],
+    inputFormat: ["First line: integer N", "Second line: N space-separated integers"],
+    constraints: ["3 ≤ N ≤ 3000", "-10^5 ≤ nums[i] ≤ 10^5"],
+    examples: [
+      {
+        input: "nums = [-1, 0, 1, 2, -1, -4]",
+        output: "[[-1,-1,2],[-1,0,1]]",
+        explanation: "Two unique triplets sum to zero.",
+      },
+    ],
   },
   {
     id: "5",
@@ -50,6 +119,23 @@ export const problems: Problem[] = [
     estimatedTime: "40 min",
     points: 200,
     status: "start",
+    description:
+      "Given two sorted arrays nums1 and nums2 of size m and n respectively, return the median of the two sorted arrays. The overall run time complexity should be O(log(m+n)).",
+    notes: ["Required time complexity: O(log(m+n))."],
+    inputFormat: [
+      "First line: integer m",
+      "Second line: m sorted integers (nums1)",
+      "Third line: integer n",
+      "Fourth line: n sorted integers (nums2)",
+    ],
+    constraints: ["0 ≤ m, n ≤ 1000", "1 ≤ m + n ≤ 2000", "-10^6 ≤ nums1[i], nums2[i] ≤ 10^6"],
+    examples: [
+      {
+        input: "nums1 = [1, 3]\nnums2 = [2]",
+        output: "2.00000",
+        explanation: "Merged array = [1,2,3], median is 2.",
+      },
+    ],
   },
   {
     id: "6",
@@ -60,6 +146,18 @@ export const problems: Problem[] = [
     estimatedTime: "35 min",
     points: 200,
     status: "start",
+    description:
+      "Given n non-negative integers representing an elevation map where the width of each bar is 1, compute how much water it can trap after raining.",
+    notes: ["Each bar has width 1."],
+    inputFormat: ["First line: integer n", "Second line: n space-separated non-negative integers"],
+    constraints: ["1 ≤ n ≤ 2 × 10^4", "0 ≤ height[i] ≤ 10^5"],
+    examples: [
+      {
+        input: "height = [0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1]",
+        output: "6",
+        explanation: "6 units of rain water are trapped.",
+      },
+    ],
   },
   {
     id: "7",
@@ -70,6 +168,27 @@ export const problems: Problem[] = [
     estimatedTime: "10 min",
     points: 50,
     status: "review",
+    description:
+      "Given an array of integers nums which is sorted in ascending order, and an integer target, write a function to search target in nums. If target exists, return its index. Otherwise, return -1. You must write an algorithm with O(log n) runtime complexity.",
+    notes: ["Array is sorted in ascending order.", "Required time complexity: O(log n)."],
+    inputFormat: [
+      "First line: integer n",
+      "Second line: n sorted integers",
+      "Third line: integer target",
+    ],
+    constraints: ["1 ≤ n ≤ 10^4", "-10^4 ≤ nums[i], target ≤ 10^4", "All integers in nums are unique"],
+    examples: [
+      {
+        input: "nums = [-1, 0, 3, 5, 9, 12]\ntarget = 9",
+        output: "4",
+        explanation: "9 exists in nums and its index is 4.",
+      },
+      {
+        input: "nums = [-1, 0, 3, 5, 9, 12]\ntarget = 2",
+        output: "-1",
+        explanation: "2 does not exist in nums so return -1.",
+      },
+    ],
   },
   {
     id: "8",
@@ -80,6 +199,21 @@ export const problems: Problem[] = [
     estimatedTime: "20 min",
     points: 100,
     status: "start",
+    description:
+      "Given an array of intervals where intervals[i] = [start_i, end_i], merge all overlapping intervals, and return an array of the non-overlapping intervals that cover all the intervals in the input.",
+    notes: ["Intervals may be given in any order."],
+    inputFormat: [
+      "First line: integer n (number of intervals)",
+      "Next n lines: two integers start_i end_i",
+    ],
+    constraints: ["1 ≤ n ≤ 10^4", "0 ≤ start_i ≤ end_i ≤ 10^4"],
+    examples: [
+      {
+        input: "intervals = [[1,3],[2,6],[8,10],[15,18]]",
+        output: "[[1,6],[8,10],[15,18]]",
+        explanation: "[1,3] and [2,6] overlap so merge to [1,6].",
+      },
+    ],
   },
   {
     id: "9",
@@ -90,6 +224,21 @@ export const problems: Problem[] = [
     estimatedTime: "30 min",
     points: 100,
     status: "start",
+    description:
+      "Given an m x n grid of characters board and a string word, return true if word exists in the grid. The word can be constructed from letters of sequentially adjacent cells (horizontally or vertically). The same letter cell may not be used more than once.",
+    notes: ["Same cell may not be used more than once."],
+    inputFormat: [
+      "First line: integers m n",
+      "Next m lines: n characters each (the grid)",
+      "Last line: string word",
+    ],
+    constraints: ["1 ≤ m, n ≤ 6", "1 ≤ word.length ≤ 15", "board and word consist only of lowercase and uppercase English letters"],
+    examples: [
+      {
+        input: 'board = [["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]]\nword = "ABCCED"',
+        output: "true",
+      },
+    ],
   },
   {
     id: "10",
@@ -100,5 +249,20 @@ export const problems: Problem[] = [
     estimatedTime: "45 min",
     points: 200,
     status: "start",
+    description:
+      "Given two strings s and t of lengths m and n respectively, return the minimum window substring of s such that every character in t (including duplicates) is included in the window. If there is no such substring, return the empty string.",
+    notes: [
+      "The answer is guaranteed to be unique.",
+      "If no valid window exists, return empty string.",
+    ],
+    inputFormat: ["First line: string s", "Second line: string t"],
+    constraints: ["1 ≤ m, n ≤ 10^5", "s and t consist of uppercase and lowercase English letters"],
+    examples: [
+      {
+        input: 's = "ADOBECODEBANC"\nt = "ABC"',
+        output: '"BANC"',
+        explanation: "Minimum window containing A, B, C is BANC.",
+      },
+    ],
   },
 ];
