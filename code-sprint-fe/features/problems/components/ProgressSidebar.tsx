@@ -1,9 +1,9 @@
 import { StatItem } from "@/components/ui/StatItem";
 
 const difficultyStats = [
-  { label: "Easy", value: "12", color: "bg-orange-400" },
-  { label: "Medium", value: "25", color: "bg-blue-400" },
-  { label: "Hard", value: "5", color: "bg-blue-700" },
+  { label: "Easy", value: "12", color: "bg-green-500" },
+  { label: "Medium", value: "25", color: "bg-yellow-500" },
+  { label: "Hard", value: "5", color: "bg-red-500" },
 ];
 
 export function ProgressSidebar() {

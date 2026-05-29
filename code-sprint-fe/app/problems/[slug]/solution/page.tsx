@@ -12,29 +12,41 @@ export default async function Solution({ params }: { params: Promise<{ slug: str
   const problem = problems.find((p) => p.slug === slug);
   if (!problem) return notFound();
 
-  return (
-    <div className="flex flex-col p-3">
-      <Container>
-        <div className="mb-2 flex gap-2">
-          <Badge variant="blue">Medium</Badge>
-          <Badge variant="red">{problem.points} pts</Badge>
-        </div>
-        <h2 className="text-2xl leading-tight font-black">{problem.title}</h2>
-        <p>Problem ID: #{problem.slug} | ~{problem.estimatedTime}</p>
-        <hr className="border-neutral-200" />
-        <Link
-          href={`/problems/${problem.slug}`}
-          className="my-2 flex flex-row items-center justify-center rounded-xl bg-neutral-300 p-3"
-        >
-          <ChevronLeftIcon /> Back to Problem Details
-        </Link>
-        <div className="flex flex-row justify-between">
-          <StatItem value={"Time Limit"} label={"2.0 seconds"} isReversed={true} />
-          <StatItem value={"Memory Limit"} label={"256MB"} isReversed={true} />
-        </div>
-      </Container>
+  const difficultyVariant = {
+    easy: "green",
+    medium: "yellow",
+    hard: "red",
+  } as const;
 
-      <CodeSolutionPanel />
+  return (
+    <div className="flex flex-col bg-background p-4 md:h-[calc(100dvh-65px)] md:flex-row md:gap-0 md:overflow-hidden md:p-0">
+      <aside className="shrink-0 md:w-[340px] md:overflow-y-auto md:border-r md:border-neutral-200 md:p-5">
+        <Container className="mt-0 max-w-full">
+          <div className="mb-2 flex gap-2">
+            <Badge variant={difficultyVariant[problem.difficulty]}>
+              {problem.difficulty.charAt(0).toUpperCase() + problem.difficulty.slice(1)}
+            </Badge>
+            <Badge variant="red">{problem.points} pts</Badge>
+          </div>
+          <h2 className="text-2xl leading-tight font-black">{problem.title}</h2>
+          <p>Problem ID: #{problem.slug} | ~{problem.estimatedTime}</p>
+          <hr className="border-neutral-200" />
+          <Link
+            href={`/problems/${problem.slug}`}
+            className="my-2 flex flex-row items-center justify-center gap-1 rounded-xl bg-neutral-100 p-3 text-sm font-medium transition-colors hover:bg-neutral-200"
+          >
+            <ChevronLeftIcon className="h-4 w-4" /> Back to Problem Details
+          </Link>
+          <div className="flex flex-row justify-between">
+            <StatItem value="2.0 seconds" label="Time Limit" isReversed={true} />
+            <StatItem value="256 MB" label="Memory Limit" isReversed={true} />
+          </div>
+        </Container>
+      </aside>
+
+      <div className="mt-4 flex flex-1 flex-col overflow-hidden md:mt-0 md:p-4">
+        <CodeSolutionPanel fillHeight />
+      </div>
     </div>
   );
 }

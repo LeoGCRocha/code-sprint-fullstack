@@ -29,7 +29,7 @@ export function Container({ children, icon, title, variant = "light", className 
   return (
     <div
       className={twMerge(
-        "mt-10 flex min-h-50 w-full max-w-md flex-col gap-0.5 rounded-2xl p-5",
+        "mt-10 flex min-h-fit w-full max-w-md flex-col gap-0.5 rounded-2xl p-5",
         styles.container,
         className
       )}
