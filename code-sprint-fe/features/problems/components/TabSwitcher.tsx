@@ -1,13 +1,20 @@
 "use client";
 
 import { useState } from "react";
+import type { Problem } from "../types";
+import { ConstraintsTab } from "./ConstraintsTab";
+import { DescriptionTab } from "./DescriptionTab";
+import { ExamplesTab } from "./ExamplesTab";
 
-const tabs = ["Description", "Examples", "Contraints"];
+const tabs = ["Description", "Examples", "Constraints"] as const;
+type TabType = (typeof tabs)[number];
 
-type TabsTypes = "Description" | "Examples" | "Contraints";
+type TabSwitcherProps = {
+  problem: Problem;
+};
 
-export function TabSwitcher() {
-  const [currentTab, setTab] = useState<TabsTypes>("Description");
+export function TabSwitcher({ problem }: TabSwitcherProps) {
+  const [currentTab, setTab] = useState<TabType>("Description");
 
   return (
     <div className="mt-4 inline-flex w-full flex-col">
@@ -15,9 +22,9 @@ export function TabSwitcher() {
         {tabs.map((tab) => (
           <button
             key={tab}
-            onClick={() => setTab(tab as TabsTypes)}
+            onClick={() => setTab(tab)}
             className={
-              currentTab == tab
+              currentTab === tab
                 ? "-mb-px flex-1 rounded-t-md border border-neutral-300 border-b-white bg-white px-4 pb-4 font-semibold"
                 : "flex-1 px-4 pb-4 text-neutral-500"
             }
@@ -27,7 +34,9 @@ export function TabSwitcher() {
         ))}
       </div>
       <div className="rounded-b-md rounded-tr-md border border-neutral-300 bg-white p-4">
-        CONTENT
+        {currentTab === "Description" && <DescriptionTab problem={problem} />}
+        {currentTab === "Examples" && <ExamplesTab problem={problem} />}
+        {currentTab === "Constraints" && <ConstraintsTab problem={problem} />}
       </div>
     </div>
   );
