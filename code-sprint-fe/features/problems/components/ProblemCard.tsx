@@ -14,6 +14,9 @@ interface ProblemCardProps {
 }
 
 export function ProblemCard({ problem }: ProblemCardProps) {
+  const buttonLabel = { start: "Start", continue: "Continue", review: "Review" }[problem.status];
+  const buttonVariant = problem.status === "review" ? "outline" : "primary";
+
   return (
     <div className="border-border rounded-2xl border bg-white p-4">
       <h2 className="text-xl leading-tight font-black">
@@ -28,7 +31,11 @@ export function ProblemCard({ problem }: ProblemCardProps) {
             {difficultyBadge[problem.difficulty].label}
           </Badge>
         </div>
-        <Button className="rounded-xl bg-black px-5 py-2 hover:bg-neutral-800">Start</Button>
+        <Link href={`/problems/${problem.slug}/solution`}>
+          <Button variant={buttonVariant} className="rounded-xl px-5 py-2">
+            {buttonLabel}
+          </Button>
+        </Link>
       </div>
     </div>
   );

@@ -1,6 +1,7 @@
 import { Badge, type BadgeVariant } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import type { Difficulty, Problem } from "../types";
+import Link from "next/link";
 
 const difficultyBadge: Record<Difficulty, { variant: BadgeVariant; label: string }> = {
   easy: { variant: "green", label: "Easy" },
@@ -28,9 +29,12 @@ export function ProblemRow({ problem, index }: { problem: Problem; index: number
         {difficultyBadge[problem.difficulty].label}
       </Badge>
       <span className="font-black">{problem.points} pts</span>
-      <Button variant={buttonVariant} size="sm">
-        {buttonLabel}
-      </Button>
+      {/* TODO: Should pass the localContext if the user has already implemented an solution */}
+      <Link href={`/problems/${problem.slug}/solution`}>
+        <Button variant={buttonVariant} size="sm">
+          {buttonLabel}
+        </Button>
+      </Link>
     </div>
   );
 }

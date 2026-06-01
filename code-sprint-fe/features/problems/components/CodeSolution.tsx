@@ -2,7 +2,10 @@
 
 import { useEffect, useRef } from "react";
 import { Editor } from "@monaco-editor/react";
-import type { editor } from "monaco-editor";
+import type { OnMount } from "@monaco-editor/react";
+
+type EditorInstance = Parameters<OnMount>[0];
+type MonacoInstance = Parameters<OnMount>[1];
 
 type CodeEditorProps = {
   language: string;
@@ -12,8 +15,8 @@ type CodeEditorProps = {
 };
 
 export function CodeSolution({ language, value, onChange, height = "400px" }: CodeEditorProps) {
-  const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
-  const monacoRef = useRef<typeof import("monaco-editor") | null>(null);
+  const editorRef = useRef<EditorInstance | null>(null);
+  const monacoRef = useRef<MonacoInstance | null>(null);
 
   useEffect(() => {
     if (!editorRef.current || !monacoRef.current) return;
@@ -29,8 +32,8 @@ export function CodeSolution({ language, value, onChange, height = "400px" }: Co
       value={value}
       keepCurrentModel
       onChange={(v) => onChange(v ?? "")}
-      onMount={(editor, monaco) => {
-        editorRef.current = editor;
+      onMount={(ed, monaco) => {
+        editorRef.current = ed;
         monacoRef.current = monaco;
       }}
       options={{
@@ -47,6 +50,7 @@ export function CodeSolution({ language, value, onChange, height = "400px" }: Co
         codeLens: false,
         links: false,
         colorDecorators: false,
+        automaticLayout: true,
       }}
     />
   );

@@ -1,3 +1,8 @@
+// TODO(BE): Replace all mock data with real API calls:
+// - ProblemList: fetch paginated problems from GET /problems with filter/sort params
+// - ProblemFilter: filter options (difficulty, tags, status) driven by BE response
+// - ProgressSidebar: fetch authenticated user progress from GET /users/me/progress
+// - LiveCompetition: fetch active competition from GET /competitions/active
 import { ProblemFilter } from "@/features/problems/components/ProblemFilter";
 import { ProblemList } from "@/features/problems/components/ProblemList";
 import { ProgressSidebar } from "@/features/problems/components/ProgressSidebar";

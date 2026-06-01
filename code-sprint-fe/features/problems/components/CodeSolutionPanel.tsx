@@ -1,9 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import dynamic from "next/dynamic";
 import { Button } from "@/components/ui/Button";
 import { ChevronDownIcon, SendIcon } from "lucide-react";
-import { CodeSolution } from "./CodeSolution";
+
+const CodeSolution = dynamic(
+  () => import("./CodeSolution").then((m) => ({ default: m.CodeSolution })),
+  { ssr: false, loading: () => <div className="flex-1 bg-neutral-900" /> },
+);
 
 const languages = [
   { label: "Python 3", value: "python3", monacoId: "python" },
@@ -25,6 +30,7 @@ export function CodeSolutionPanel({ fillHeight = false }: CodeSolutionPanelProps
         <span className="text-sm font-semibold text-white">{language.label}</span>
         <div className="relative">
           <select
+            suppressHydrationWarning
             value={language.value}
             onChange={(e) => setLanguage(languages.find((l) => l.value === e.target.value)!)}
             className="cursor-pointer appearance-none rounded-lg bg-neutral-600 px-3 py-1 text-sm text-white"

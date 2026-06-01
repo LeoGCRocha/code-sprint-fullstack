@@ -1,3 +1,7 @@
+// TODO(BE): Replace local mock data with real API calls:
+// - Fetch problem by slug from GET /problems/:slug
+// - problem.status (solved/in-progress) should come from GET /users/me/problems/:slug
+// - problem.solvedCount should be a live stat from the BE
 import { notFound } from "next/navigation";
 import { Badge } from "@/components/ui/Badge";
 import { problems } from "@/features/problems/data";

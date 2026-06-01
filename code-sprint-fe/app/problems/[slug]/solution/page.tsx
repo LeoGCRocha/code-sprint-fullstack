@@ -1,3 +1,8 @@
+// TODO(BE): Wire solution page to real API:
+// - Fetch problem by slug from GET /problems/:slug (replace local mock)
+// - CodeSolutionPanel "Submit Solution" button should POST /submissions with { problemSlug, language, code }
+// - After submit, redirect to /submissions/:id with the returned submission ID
+// - time/memory limits should come from the problem data, not be hardcoded
 import { Badge } from "@/components/ui/Badge";
 import { Container } from "@/components/ui/Container";
 import { StatItem } from "@/components/ui/StatItem";
@@ -19,8 +24,8 @@ export default async function Solution({ params }: { params: Promise<{ slug: str
   } as const;
 
   return (
-    <div className="flex flex-col bg-background p-4 md:h-[calc(100dvh-65px)] md:flex-row md:gap-0 md:overflow-hidden md:p-0">
-      <aside className="shrink-0 md:w-[340px] md:overflow-y-auto md:border-r md:border-neutral-200 md:p-5">
+    <div className="flex h-[calc(100dvh-65px)] flex-col overflow-hidden bg-background p-4 md:flex-row md:gap-0 md:p-0">
+      <aside className="shrink-0 overflow-y-auto md:w-[340px] md:border-r md:border-neutral-200 md:p-5">
         <Container className="mt-0 max-w-full">
           <div className="mb-2 flex gap-2">
             <Badge variant={difficultyVariant[problem.difficulty]}>

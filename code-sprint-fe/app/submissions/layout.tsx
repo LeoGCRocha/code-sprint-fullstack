@@ -1,10 +1,10 @@
 import { AppNavbar } from "@/components/layout/AppNavbar";
 import { Footer } from "@/components/layout/Footer";
 
-export default function ProblemsLayout({ children }: { children: React.ReactNode }) {
+export default function SubimissionsLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <AppNavbar activeHref="/problems" />
+      <AppNavbar activeHref="/submit" />
       <main className="flex-1">{children}</main>
       <Footer />
     </>
