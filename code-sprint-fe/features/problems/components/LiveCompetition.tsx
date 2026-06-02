@@ -15,11 +15,11 @@ export function LiveCompetition() {
           <p className="mt-1 text-sm text-neutral-400">
             Solve 5 algorithmic challenges in 60 minutes
           </p>
-          <p className="mt-1 text-sm font-semibold text-orange-400">
+          <p className="mt-1 text-sm font-semibold text-primary-400">
             Ends in 2:34:15
           </p>
           <div className="mt-2 h-1.5 w-full rounded-full bg-neutral-700">
-            <div className="h-full w-2/3 rounded-full bg-orange-400" />
+            <div className="h-full w-2/3 rounded-full bg-primary-400" />
           </div>
         </div>
         <Button className="w-full bg-white text-black hover:bg-neutral-100">

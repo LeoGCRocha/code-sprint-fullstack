@@ -95,16 +95,12 @@ export default function SubmissionPage() {
             <div className="rounded-xl bg-neutral-50 p-4">
               <p className="text-xs text-neutral-600">Runtime</p>
               <p className="text-2xl font-black">0.012s</p>
-              <span className="mt-1 inline-block rounded-full bg-green-100 px-2 py-0.5 text-xs font-semibold text-green-700">
-                Beats 94.2% of users
-              </span>
+              <Badge variant="green" className="mt-1">Beats 94.2% of users</Badge>
             </div>
             <div className="rounded-xl bg-neutral-50 p-4">
               <p className="text-xs text-neutral-600">Memory</p>
               <p className="text-2xl font-black">4.2 MB</p>
-              <span className="mt-1 inline-block rounded-full bg-green-100 px-2 py-0.5 text-xs font-semibold text-green-700">
-                Beats 88.5% of users
-              </span>
+              <Badge variant="green" className="mt-1">Beats 88.5% of users</Badge>
             </div>
           </div>
         </div>

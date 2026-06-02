@@ -14,7 +14,7 @@ export function ProblemRow({ problem, index }: { problem: Problem; index: number
   const buttonVariant = problem.status === "review" ? "outline" : "primary";
 
   return (
-    <div className="grid grid-cols-[40px_1fr_auto_auto_auto] items-center gap-4 rounded-xl bg-white p-4">
+    <div className="grid grid-cols-[40px_1fr_auto_auto_auto] items-center gap-4 rounded-2xl bg-white p-4">
       <span className="text-center font-mono text-sm text-neutral-400">
         {String(index).padStart(2, "0")}
       </span>

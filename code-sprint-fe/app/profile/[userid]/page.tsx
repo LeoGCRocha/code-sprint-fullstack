@@ -1,14 +1,21 @@
-import { Container } from "@/components/ui/Container";
+import { Achievements } from "@/features/profile/Achievements";
 import { Heatmap } from "@/features/profile/Heatmap";
+import { ProblemCategories } from "@/features/profile/ProblemCategories";
+import { Profile } from "@/features/profile/Profile";
+import { StatsBar } from "@/features/profile/StatsBar";
 
 export default function ProfilePage() {
   return (
-    <div className="grid grid-cols-[1fr_500px] gap-4 p-3">
-      <Heatmap />
-
-      <Container>
-        <h1>Problem Categories</h1>
-      </Container>
+    <div className="flex w-full flex-col gap-3 overflow-hidden p-3 md:grid md:grid-cols-[1fr_300px] md:items-start">
+      <div className="flex flex-col gap-4">
+        <Profile />
+        <StatsBar />
+        <Heatmap />
+      </div>
+      <aside className="flex flex-col gap-3">
+        <ProblemCategories />
+        <Achievements />
+      </aside>
     </div>
   );
 }

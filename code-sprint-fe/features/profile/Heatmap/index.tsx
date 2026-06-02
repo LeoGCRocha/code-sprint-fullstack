@@ -69,12 +69,12 @@ export function Heatmap() {
   const total = days.reduce((sum, d) => sum + d.count, 0);
 
   return (
-    <div className="flex flex-col justify-center gap-1 rounded-2xl bg-white p-5">
+    <div className="flex min-w-0 flex-col justify-center gap-1 rounded-2xl bg-white p-5">
       <h3 className="font-bold">Submission Activity</h3>
       <p className="mb-4 text-sm text-neutral-400">{total} submissions · Last year</p>
 
       <div className="overflow-x-auto md:overflow-visible">
-        <div className="flex justify-center gap-1">
+        <div className="flex gap-1 md:justify-center">
           {weeks.map((week, wi) => (
             <div key={wi} className="flex flex-col gap-1">
               {week.map((day, di) =>

@@ -33,7 +33,7 @@ export function AppNavbar({ activeHref }: AppNavbarProps) {
                   href={link.href}
                   className={
                     link.href === activeHref
-                      ? "border-b-2 border-orange-400 pb-1 font-semibold"
+                      ? "border-b-2 border-primary-400 pb-1 font-semibold"
                       : "text-neutral-500 hover:text-neutral-900"
                   }
                 >
@@ -46,7 +46,7 @@ export function AppNavbar({ activeHref }: AppNavbarProps) {
 
         <div className="flex items-center gap-3">
           <span className="flex items-center gap-1 text-sm font-semibold">
-            <span className="h-2 w-2 rounded-full bg-orange-400" />
+            <span className="h-2 w-2 rounded-full bg-primary-400" />
             2,450 pts
           </span>
           <div className="flex h-8 w-8 items-center justify-center rounded-full bg-neutral-800 text-sm font-bold text-white">

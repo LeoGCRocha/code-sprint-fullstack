@@ -7,6 +7,7 @@
 // - Highlight current user row by matching user ID from auth session
 import { CurrentCompetition } from "@/features/competitions/CurrentCompetition";
 import { Button } from "@/components/ui/Button";
+import { Badge } from "@/components/ui/Badge";
 import { ArrowRightIcon } from "lucide-react";
 
 const problems = [
@@ -46,7 +47,7 @@ const standings = [
     name: "neural_ninja",
     solved: "4/4",
     pts: 820,
-    avatarBg: "bg-green-500",
+    avatarBg: "bg-neutral-800",
     isYou: false,
   },
   {
@@ -55,7 +56,7 @@ const standings = [
     name: "byte_wizard",
     solved: "4/4",
     pts: 780,
-    avatarBg: "bg-blue-500",
+    avatarBg: "bg-primary-700",
     isYou: false,
   },
   {
@@ -133,10 +134,7 @@ export default function CompetitionsPage() {
         <div className="rounded-2xl bg-white p-5">
           <div className="mb-3 flex items-center justify-between">
             <h2 className="font-bold">Live Standings</h2>
-            <span className="inline-flex items-center gap-1 rounded-full bg-green-100 px-2 py-0.5 text-xs font-semibold text-green-700">
-              <span className="h-1.5 w-1.5 rounded-full bg-green-500" />
-              Active
-            </span>
+            <Badge variant="green">Active</Badge>
           </div>
 
           <div className="mb-2 grid grid-cols-[1.5rem_1fr_auto_auto] gap-x-3 px-1 text-xs font-semibold text-neutral-400">
@@ -171,20 +169,11 @@ export default function CompetitionsPage() {
             ))}
           </div>
 
-          <button className="mt-3 w-full rounded-xl border border-neutral-200 py-2.5 text-sm font-semibold text-neutral-600 hover:bg-neutral-50">
+          <Button variant="outline" className="mt-3 w-full rounded-xl">
             Load More Participants
-          </button>
+          </Button>
         </div>
 
-        {/* Footer */}
-        <footer className="pb-6 text-center text-xs text-neutral-400">
-          <p>© 2026 Code Sprint Platform</p>
-          <p className="mt-1 flex justify-center gap-3">
-            <span className="cursor-pointer hover:text-neutral-600">Terms</span>
-            <span className="cursor-pointer hover:text-neutral-600">Privacy</span>
-            <span className="cursor-pointer hover:text-neutral-600">Help</span>
-          </p>
-        </footer>
       </div>
     </div>
   );
