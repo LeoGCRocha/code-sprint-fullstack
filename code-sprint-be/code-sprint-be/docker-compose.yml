@@ -1,0 +1,32 @@
+# Standalone database stack for local development and CI.
+#
+# Aspire (src/aspire/CodeSprint.AppHost) can provision the same Postgres + pgAdmin
+# on its own; use this compose file when you want the database without running the
+# full Aspire orchestrator (e.g. running EF Core migrations, integration tests, or
+# connecting from tools).
+#
+#   docker compose up -d
+#   ConnectionStrings__usersdb=Host=localhost;Port=5432;Database=usersdb;Username=codesprint;Password=codesprint
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: codesprint-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: codesprint
+      POSTGRES_PASSWORD: codesprint
+      POSTGRES_DB: usersdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - codesprint-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U codesprint -d usersdb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      
+volumes:
+  codesprint-pgdata:
+    name: codesprint-pgdata

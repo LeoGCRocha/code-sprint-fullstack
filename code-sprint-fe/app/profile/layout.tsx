@@ -1,10 +1,10 @@
-import { AppNavbar } from "@/components/layout/AppNavbar";
+import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 
 export default function ProfileLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <AppNavbar activeHref="/profile" />
+      <Navbar activeHref="/profile" />
       <main className="flex-1">{children}</main>
       <Footer />
     </>

@@ -1,0 +1,16 @@
+L:\dev\code-sprint-fullstack\code-sprint-be\code-sprint-be\src\users\CodeSprint.Users.Domain\bin\Debug\net10.0\CodeSprint.Users.Domain.deps.json
+L:\dev\code-sprint-fullstack\code-sprint-be\code-sprint-be\src\users\CodeSprint.Users.Domain\bin\Debug\net10.0\CodeSprint.Users.Domain.dll
+L:\dev\code-sprint-fullstack\code-sprint-be\code-sprint-be\src\users\CodeSprint.Users.Domain\bin\Debug\net10.0\CodeSprint.Users.Domain.pdb
+L:\dev\code-sprint-fullstack\code-sprint-be\code-sprint-be\src\users\CodeSprint.Users.Domain\bin\Debug\net10.0\CodeSprint.Shared.dll
+L:\dev\code-sprint-fullstack\code-sprint-be\code-sprint-be\src\users\CodeSprint.Users.Domain\bin\Debug\net10.0\CodeSprint.Shared.pdb
+L:\dev\code-sprint-fullstack\code-sprint-be\code-sprint-be\src\users\CodeSprint.Users.Domain\obj\Debug\net10.0\CodeSprint.Users.Domain.csproj.AssemblyReference.cache
+L:\dev\code-sprint-fullstack\code-sprint-be\code-sprint-be\src\users\CodeSprint.Users.Domain\obj\Debug\net10.0\CodeSprint.Users.Domain.GeneratedMSBuildEditorConfig.editorconfig
+L:\dev\code-sprint-fullstack\code-sprint-be\code-sprint-be\src\users\CodeSprint.Users.Domain\obj\Debug\net10.0\CodeSprint.Users.Domain.AssemblyInfoInputs.cache
+L:\dev\code-sprint-fullstack\code-sprint-be\code-sprint-be\src\users\CodeSprint.Users.Domain\obj\Debug\net10.0\CodeSprint.Users.Domain.AssemblyInfo.cs
+L:\dev\code-sprint-fullstack\code-sprint-be\code-sprint-be\src\users\CodeSprint.Users.Domain\obj\Debug\net10.0\CodeSprint.Users.Domain.csproj.CoreCompileInputs.cache
+L:\dev\code-sprint-fullstack\code-sprint-be\code-sprint-be\src\users\CodeSprint.Users.Domain\obj\Debug\net10.0\CodeSprint.Users.Domain.sourcelink.json
+L:\dev\code-sprint-fullstack\code-sprint-be\code-sprint-be\src\users\CodeSprint.Users.Domain\obj\Debug\net10.0\CodeSpri.6AFA9585.Up2Date
+L:\dev\code-sprint-fullstack\code-sprint-be\code-sprint-be\src\users\CodeSprint.Users.Domain\obj\Debug\net10.0\CodeSprint.Users.Domain.dll
+L:\dev\code-sprint-fullstack\code-sprint-be\code-sprint-be\src\users\CodeSprint.Users.Domain\obj\Debug\net10.0\refint\CodeSprint.Users.Domain.dll
+L:\dev\code-sprint-fullstack\code-sprint-be\code-sprint-be\src\users\CodeSprint.Users.Domain\obj\Debug\net10.0\CodeSprint.Users.Domain.pdb
+L:\dev\code-sprint-fullstack\code-sprint-be\code-sprint-be\src\users\CodeSprint.Users.Domain\obj\Debug\net10.0\ref\CodeSprint.Users.Domain.dll

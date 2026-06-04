@@ -1,0 +1,5 @@
+.playwright-mcp
+.env.local
+.env
+.launchSettings.json
+Properties/**

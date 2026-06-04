@@ -19,7 +19,9 @@ export function ProblemRow({ problem, index }: { problem: Problem; index: number
         {String(index).padStart(2, "0")}
       </span>
       <div>
-        <p className="font-semibold">{problem.title}</p>
+        <Link href={`/problems/${problem.slug}`} className="font-semibold hover:underline">
+          {problem.title}
+        </Link>
         <small className="text-neutral-400">
           {problem.tags.join(", ")} ·{problem.estimatedTime} ·{" "}
           {problem.solvedCount.toLocaleString("en-US")} solved

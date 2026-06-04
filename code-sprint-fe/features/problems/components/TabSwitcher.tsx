@@ -6,7 +6,7 @@ import { ConstraintsTab } from "./ConstraintsTab";
 import { DescriptionTab } from "./DescriptionTab";
 import { ExamplesTab } from "./ExamplesTab";
 
-const tabs = ["Description", "Examples", "Constraints"] as const;
+const tabs = ["Problem", "Examples", "Constraints"] as const;
 type TabType = (typeof tabs)[number];
 
 type TabSwitcherProps = {
@@ -14,7 +14,7 @@ type TabSwitcherProps = {
 };
 
 export function TabSwitcher({ problem }: TabSwitcherProps) {
-  const [currentTab, setTab] = useState<TabType>("Description");
+  const [currentTab, setTab] = useState<TabType>("Problem");
 
   return (
     <div className="mt-4 inline-flex w-full flex-col">
@@ -34,7 +34,7 @@ export function TabSwitcher({ problem }: TabSwitcherProps) {
         ))}
       </div>
       <div className="rounded-b-md rounded-tr-md border border-neutral-300 bg-white p-4">
-        {currentTab === "Description" && <DescriptionTab problem={problem} />}
+        {currentTab === "Problem" && <DescriptionTab problem={problem} />}
         {currentTab === "Examples" && <ExamplesTab problem={problem} />}
         {currentTab === "Constraints" && <ConstraintsTab problem={problem} />}
       </div>
