@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\users\CodeSprint.Users\CodeSprint.Users.csproj" />
+    <ProjectReference Include="..\..\problems\CodeSprint.Problems\CodeSprint.Problems.csproj" />
   </ItemGroup>
 
 </Project>
