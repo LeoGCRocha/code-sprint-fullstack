@@ -9,8 +9,15 @@ var postgres = builder.AddPostgres("postgres")
 // Database for the Users bounded context.
 var usersDb = postgres.AddDatabase("usersdb");
 
+// Database for the Problems bounded context.
+var problemsDb = postgres.AddDatabase("problemsdb");
+
 builder.AddProject<Projects.CodeSprint_Users>("users-api")
        .WithReference(usersDb)
        .WaitFor(usersDb);
+
+builder.AddProject<Projects.CodeSprint_Problems>("problems-api")
+       .WithReference(problemsDb)
+       .WaitFor(problemsDb);
 
 builder.Build().Run();
