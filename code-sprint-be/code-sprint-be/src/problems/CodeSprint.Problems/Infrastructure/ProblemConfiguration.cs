@@ -102,7 +102,7 @@ public sealed class ProblemConfiguration : IEntityTypeConfiguration<Problem>
             examples.ToTable("problem_examples");
             examples.WithOwner().HasForeignKey("problem_id");
             examples.HasKey("problem_id", nameof(Example.Ordinal));
-            examples.Property(e => e.Ordinal).HasColumnName("ordinal");
+            examples.Property(e => e.Ordinal).HasColumnName("ordinal").ValueGeneratedNever();
             examples.Property(e => e.Input).HasColumnName("input").IsRequired();
             examples.Property(e => e.Output).HasColumnName("output").IsRequired();
             examples.Property(e => e.Explanation).HasColumnName("explanation");
@@ -128,7 +128,7 @@ public sealed class ProblemConfiguration : IEntityTypeConfiguration<Problem>
             testCases.ToTable("problem_test_cases");
             testCases.WithOwner().HasForeignKey("problem_id");
             testCases.HasKey("problem_id", nameof(TestCase.Ordinal));
-            testCases.Property(tc => tc.Ordinal).HasColumnName("ordinal");
+            testCases.Property(tc => tc.Ordinal).HasColumnName("ordinal").ValueGeneratedNever();
             testCases.Property(tc => tc.Input).HasColumnName("input").IsRequired();
             testCases.Property(tc => tc.ExpectedOutput).HasColumnName("expected_output").IsRequired();
             testCases.Property(tc => tc.IsHidden).HasColumnName("is_hidden").IsRequired();
