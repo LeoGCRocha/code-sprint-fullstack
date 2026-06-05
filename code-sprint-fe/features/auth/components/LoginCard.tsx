@@ -4,10 +4,20 @@ import { Button } from "@/components/ui/Button";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { useState } from "react";
+import { Error } from "@/components/ui/Error";
 
 export function LoginCard() {
+  const searchParams = useSearchParams();
+  const [dismissed, setDismissed] = useState(false);
+
+  const errorParam = searchParams.get("error_description") ?? searchParams.get("error");
+  const showError = !!errorParam && !dismissed;
+
   return (
     <div className="flex w-full max-w-sm flex-col">
+      {showError && <Error message={errorParam!} onClose={() => setDismissed(true)} />}
       <div className="border-border bg-surface mt-10 rounded-2xl border p-8 shadow-sm">
         <div className="mb-7">
           <h1 className="text-text-primary text-xl font-bold">Welcome back</h1>

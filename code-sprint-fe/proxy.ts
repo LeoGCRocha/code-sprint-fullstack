@@ -8,13 +8,16 @@ export async function proxy(request: NextRequest) {
     return authRes;
   }
 
-  const publicPaths = ["/", "/login", "/problems"];
+  const publicPaths = ["/", "/problems"];
   const isPublic = publicPaths.some(
     (p) => request.nextUrl.pathname === p || request.nextUrl.pathname.startsWith(p + "/")
   );
   if (isPublic) return authRes;
 
   const session = await auth0.getSession(request);
+  if (session && request.nextUrl.pathname === "/login") {
+    return NextResponse.redirect(new URL("/", request.url));
+  }
 
   if (!session) {
     return NextResponse.redirect(new URL("/auth/login", request.nextUrl.origin));

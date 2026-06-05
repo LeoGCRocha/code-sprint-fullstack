@@ -1,4 +1,5 @@
 import { auth0 } from "@/lib/auth0";
+import { mockUser } from "@/mocks/data/user";
 
 export interface BeUser {
   id: string;
@@ -10,11 +11,19 @@ export interface BeUser {
   memberSince: string;
 }
 
-export async function getCurrentUser(): Promise<BeUser | null> {
-  const session = await auth0.getSession();
-  console.log("[getCurrentUser] session:", session ? "present" : "null");
+export type UserResult =
+  | { state: "unauthenticated" }
+  | { state: "error" }
+  | { state: "ok"; user: BeUser };
 
-  if (!session) return null;
+export async function getCurrentUser(): Promise<UserResult> {
+  if (process.env.USE_MOCKS === "true") {
+    return { state: "ok", user: mockUser };
+  }
+
+  const session = await auth0.getSession();
+
+  if (!session) return { state: "unauthenticated" };
 
   try {
     const res = await fetch(`${process.env.API_GATEWAY_URL}/users/me`, {
@@ -24,12 +33,12 @@ export async function getCurrentUser(): Promise<BeUser | null> {
 
     if (!res.ok) {
       console.error("[getCurrentUser] status:", res.status, await res.text());
-      return null;
+      return { state: "error" };
     }
 
-    return res.json();
+    return { state: "ok", user: await res.json() };
   } catch (err) {
     console.error("[getCurrentUser] fetch failed:", err);
-    return null;
+    return { state: "error" };
   }
 }
