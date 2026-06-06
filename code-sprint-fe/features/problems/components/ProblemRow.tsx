@@ -1,6 +1,7 @@
 import { Badge, type BadgeVariant } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
-import type { Difficulty, Problem } from "../types";
+import type { Difficulty } from "../types";
+import type { Problem } from "@/services/problem";
 import Link from "next/link";
 
 const difficultyBadge: Record<Difficulty, { variant: BadgeVariant; label: string }> = {
@@ -10,15 +11,16 @@ const difficultyBadge: Record<Difficulty, { variant: BadgeVariant; label: string
 };
 
 export function ProblemRow({ problem, index }: { problem: Problem; index: number }) {
-  const buttonLabel = { start: "Start", continue: "Continue", review: "Review" }[problem.status];
-  const buttonVariant = problem.status === "review" ? "outline" : "primary";
+  const status = problem.status ?? "start";
+  const buttonLabel = { start: "Start", continue: "Continue", review: "Review" }[status];
+  const buttonVariant = status === "review" ? "outline" : "primary";
 
   return (
     <div className="grid grid-cols-[40px_1fr_auto_auto_auto] items-center gap-4 rounded-2xl bg-white p-4">
       <span className="text-center font-mono text-sm text-neutral-400">
         {String(index).padStart(2, "0")}
       </span>
-      <div>
+      <div className="flex flex-col gap-0.5">
         <Link href={`/problems/${problem.slug}`} className="font-semibold hover:underline">
           {problem.title}
         </Link>

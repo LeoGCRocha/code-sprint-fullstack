@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "dev:mock": "cross-env NEXT_PUBLIC_USE_MOCKS=true USE_MOCKS=true next dev",
+    "dev": "cross-env NODE_OPTIONS=--max-http-header-size=32768 next dev",
+    "dev:mock": "cross-env NEXT_PUBLIC_USE_MOCKS=true USE_MOCKS=true NODE_OPTIONS=--max-http-header-size=32768 next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",

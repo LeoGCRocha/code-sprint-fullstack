@@ -60,15 +60,30 @@ public static class ProblemsModule
         return Results.Created($"/problems/{slug.Value}", ToResponse(problemResult.Value));
     }
 
-    private static async Task<IResult> List(ProblemsDbContext db)
+    private static async Task<IResult> List(
+        ProblemsDbContext db,
+        string? difficulty = null,
+        int page = 1,
+        int pageSize = 10)
     {
-        var problems = await db.Problems
+        var query = db.Problems
             .AsNoTracking()
-            .Where(p => p.IsPublished)
+            .Where(p => p.IsPublished);
+
+        if (!string.IsNullOrWhiteSpace(difficulty) &&
+            Enum.TryParse<Difficulty>(difficulty, ignoreCase: true, out var diff))
+            query = query.Where(p => p.Difficulty == diff);
+
+        var total = await query.CountAsync();
+
+        var items = await query
             .OrderBy(p => p.Title)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
             .ToListAsync();
 
-        return Results.Ok(problems.Select(ToResponse));
+        return Results.Ok(new PagedResponse<ProblemResponse>(
+            items.Select(ToResponse).ToList(), total, page, pageSize));
     }
 
     private static async Task<IResult> GetBySlug(string slug, ProblemsDbContext db)

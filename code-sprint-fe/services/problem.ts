@@ -6,8 +6,10 @@ export type Problem = {
   title: string;
   difficulty: Difficulty;
   points: number;
+  estimatedTime: string;
   solvedCount: number;
   tags: string[];
+  status?: "start" | "continue" | "review";
 };
 
 export interface ProblemsPage {
@@ -21,14 +23,16 @@ export interface ProblemsFilter {
   difficulty?: Difficulty | undefined;
   tag?: string;
   page?: number;
+  pageSize?: number;
 }
 
 export async function fetchProblems(filter: ProblemsFilter): Promise<ProblemsPage> {
   const params = new URLSearchParams();
   if (filter.difficulty) params.set("difficulty", filter.difficulty);
   if (filter.page) params.set("page", String(filter.page));
+  if (filter.pageSize) params.set("pageSize", String(filter.pageSize));
 
-  const res = await fetch(`/api/problems?${params}`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/problems?${params}`);
 
   if (!res.ok) throw new Error(`HTTTP ${res.status}`);
 

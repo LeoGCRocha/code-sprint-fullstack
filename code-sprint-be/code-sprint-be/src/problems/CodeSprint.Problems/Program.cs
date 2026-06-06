@@ -1,24 +1,17 @@
 using CodeSprint.Problems.API.Endpoints.Problems;
 using CodeSprint.Problems.Infrastructure;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.ConfigureHttpJsonOptions(o =>
+    o.SerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase);
+
 builder.Services.AddDbContext<ProblemsDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("problemsdb")));
 
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(options =>
-{
-    options.Authority = builder.Configuration["Auth0:Authority"];
-    options.Audience  = builder.Configuration["Auth0:Audience"];
-    options.MapInboundClaims = false;
-});
-builder.Services.AddAuthorization();
+// Auth0 JWT authentication + authorization, centralized in ServiceDefaults.
+builder.AddCodeSprintAuth();
 
 const string frontendCors = "frontend";
 builder.Services.AddCors(options =>
@@ -37,6 +30,7 @@ if (app.Environment.IsDevelopment())
     using var scope = app.Services.CreateScope();
     var db = scope.ServiceProvider.GetRequiredService<ProblemsDbContext>();
     await db.Database.MigrateAsync();
+    await ProblemSeeder.SeedAsync(db);
 }
 
 app.UseCors(frontendCors);

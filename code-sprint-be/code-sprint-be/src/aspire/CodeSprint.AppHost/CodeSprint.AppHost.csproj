@@ -15,6 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\users\CodeSprint.Users\CodeSprint.Users.csproj" />
     <ProjectReference Include="..\..\problems\CodeSprint.Problems\CodeSprint.Problems.csproj" />
+    <ProjectReference Include="..\..\gateway\CodeSprint.Gateway\CodeSprint.Gateway.csproj" />
   </ItemGroup>
 
 </Project>

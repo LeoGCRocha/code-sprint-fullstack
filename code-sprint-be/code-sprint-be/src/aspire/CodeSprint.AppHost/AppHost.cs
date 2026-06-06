@@ -12,12 +12,22 @@ var usersDb = postgres.AddDatabase("usersdb");
 // Database for the Problems bounded context.
 var problemsDb = postgres.AddDatabase("problemsdb");
 
-builder.AddProject<Projects.CodeSprint_Users>("users-api")
+// Domain services — internal only, reached through the gateway via service discovery.
+var usersApi = builder.AddProject<Projects.CodeSprint_Users>("users-api")
        .WithReference(usersDb)
        .WaitFor(usersDb);
 
-builder.AddProject<Projects.CodeSprint_Problems>("problems-api")
+var problemsApi = builder.AddProject<Projects.CodeSprint_Problems>("problems-api")
        .WithReference(problemsDb)
        .WaitFor(problemsDb);
+
+// API gateway — the only public-facing project. References to the services inject the
+// discovery config that lets YARP resolve "http://users-api" / "http://problems-api".
+builder.AddProject<Projects.CodeSprint_Gateway>("gateway")
+       .WithReference(usersApi)
+       .WithReference(problemsApi)
+       .WaitFor(usersApi)
+       .WaitFor(problemsApi)
+       .WithExternalHttpEndpoints();
 
 builder.Build().Run();

@@ -1,29 +1,33 @@
 "use client";
 
-import { Fragment, useState } from "react";
-import { problems } from "../data";
+import { Fragment } from "react";
 import { ProblemCard } from "./ProblemCard";
 import { ProblemRow } from "./ProblemRow";
 import { Pagination } from "@/components/ui/Pagination";
-import { useProblems } from "../hooks/useProblems";
-import { Difficulty } from "../types";
+import type { Problem } from "@/services/problem";
 
 const PAGE_SIZE = 4;
 
-// TODO: Implementar essa pagina aqui.....
+type ProblemListProps = {
+  items: Problem[];
+  page: number;
+  totalPages: number;
+  onPageChange: (page: number) => void;
+  isLoading: boolean;
+};
 
-export function ProblemList() {
-  const [page, setPage] = useState(1);
-  const [difficulty, setDifficulty] = useState<Difficulty | undefined>(undefined);
-
-  const totalPages = Math.ceil(problems.length / PAGE_SIZE);
-  const paginated = problems.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
-
-  const { data, isLoading, isError } = useProblems({ difficulty, page });
+export function ProblemList({
+  items,
+  page,
+  totalPages,
+  onPageChange,
+  isLoading,
+}: ProblemListProps) {
+  if (isLoading) return <div className="py-8 text-center text-neutral-500">Loading...</div>;
 
   return (
     <div className="flex flex-col gap-2">
-      {paginated.map((problem, i) => (
+      {items.map((problem, i) => (
         <Fragment key={problem.id}>
           <div className="md:hidden">
             <ProblemCard problem={problem} />
@@ -33,7 +37,7 @@ export function ProblemList() {
           </div>
         </Fragment>
       ))}
-      <Pagination page={page} totalPages={totalPages} onPageChange={setPage} />
+      <Pagination page={page} totalPages={totalPages} onPageChange={onPageChange} />
     </div>
   );
 }

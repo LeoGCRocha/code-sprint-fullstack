@@ -1,6 +1,7 @@
 import { Badge, type BadgeVariant } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
-import type { Difficulty, Problem } from "../types";
+import type { Difficulty } from "../types";
+import type { Problem } from "@/services/problem";
 import Link from "next/link";
 
 const difficultyBadge: Record<Difficulty, { variant: BadgeVariant; label: string }> = {
@@ -14,8 +15,9 @@ interface ProblemCardProps {
 }
 
 export function ProblemCard({ problem }: ProblemCardProps) {
-  const buttonLabel = { start: "Start", continue: "Continue", review: "Review" }[problem.status];
-  const buttonVariant = problem.status === "review" ? "outline" : "primary";
+  const status = problem.status ?? "start";
+  const buttonLabel = { start: "Start", continue: "Continue", review: "Review" }[status];
+  const buttonVariant = status === "review" ? "outline" : "primary";
 
   return (
     <div className="border-border rounded-2xl border bg-white p-5">

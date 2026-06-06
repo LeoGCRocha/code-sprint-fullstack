@@ -1,5 +1,6 @@
 import { auth0 } from "@/lib/auth0";
 import { mockUser } from "@/mocks/data/user";
+import { cookies } from "next/headers";
 
 export interface BeUser {
   id: string;
@@ -18,6 +19,8 @@ export type UserResult =
 
 export async function getCurrentUser(): Promise<UserResult> {
   if (process.env.USE_MOCKS === "true") {
+    const jar = await cookies();
+    if (jar.get("mock_logged_out")?.value === "true") return { state: "unauthenticated" };
     return { state: "ok", user: mockUser };
   }
 
@@ -26,8 +29,13 @@ export async function getCurrentUser(): Promise<UserResult> {
   if (!session) return { state: "unauthenticated" };
 
   try {
-    const res = await fetch(`${process.env.API_GATEWAY_URL}/users/me`, {
-      headers: { Authorization: `Bearer ${session.tokenSet.accessToken}` },
+    // Gateway validates the Auth0 ACCESS token (audience = AUTH0_AUDIENCE),
+    // not the ID token. getAccessToken() returns the access token configured
+    // with the API audience in lib/auth0.ts.
+    const { token } = await auth0.getAccessToken();
+
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/me`, {
+      headers: { Authorization: `Bearer ${token}` },
       next: { revalidate: 60 },
     });
 

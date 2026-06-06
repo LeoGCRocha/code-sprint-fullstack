@@ -34,10 +34,10 @@ Applying that test:
                  SubmissionEvaluated (RabbitMQ, async)
         ┌──────────────────────────────────────────────┐
         │                                               ▼
-  ┌───────────────┐   gRPC (read TestSuite)    ┌──────────────────┐
+  ┌───────────────┐   gRPC (read TestCases)    ┌──────────────────┐
   │  Submission   │ ─────────────────────────▶ │   Problems BC    │
   │   (upstream   │                            │  Problem (AR)    │
-  │   publisher)  │                            │  TestSuite (AR)  │
+  │   publisher)  │                            │                  │
   └───────────────┘                            └──────────────────┘
         │  SubmissionEvaluated                          ▲
         ▼                                               │ solvedCount
@@ -55,7 +55,7 @@ Applying that test:
   `SubmissionEvaluated` integration event. Submission is upstream; both read models conform
   to its published contract (apply an **Anti-Corruption Layer** when translating the event
   into local model terms — do not leak Submission's vocabulary into User/Problem).
-- **Submission → Problems** (gRPC TestSuite fetch): *Customer–Supplier*; Problems is the
+- **Submission → Problems** (gRPC test cases fetch): *Customer–Supplier*; Problems is the
   supplier of the judging data.
 - **Users ↔ Problems**: **no relationship.** They share no schema, no object model, no calls.
   Their only connection is indirect, through Submission events.
@@ -69,9 +69,9 @@ Each service is a vertical slice with the standard four layers. Dependencies poi
 
 | Layer | Responsibility | Examples (Users BC) | Examples (Problems BC) |
 |---|---|---|---|
-| **Domain** | Aggregates, entities, value objects, domain events, invariants. Pure, no I/O. | `User`, `Handle`, `Email`, `UserRegistered` | `Problem`, `TestSuite`, `Slug`, `Difficulty`, `ScorePoints`, `Example` |
-| **Application** | Use cases / command + query handlers, orchestration, transaction boundary, ports (interfaces). | `RegisterUser`, `ChangeHandle`, `GetProfile` | `CreateProblem`, `EditProblem`, `GetProblem`, `ListProblems` |
-| **Infrastructure** | Adapters: EF Core repos, Postgres, RabbitMQ publish/subscribe, gRPC servers/clients, OAuth. | `UserRepository`, `ProgressionProjectionHandler` | `ProblemRepository`, `TestSuiteRepository`, `ProblemGrpcService`, `SolvedCountProjectionHandler` |
+| **Domain** | Aggregates, entities, value objects, domain events, invariants. Pure, no I/O. | `User`, `Handle`, `Email`, `UserRegistered` | `Problem`, `Slug`, `Tag`, `Difficulty`, `Example`, `TestCase` |
+| **Application** | Use cases / command + query handlers, orchestration, transaction boundary, ports (interfaces). | `RegisterUser`, `ChangeHandle`, `GetProfile` | `CreateProblem`, `EditProblem`, `PublishProblem`, `SetTestCases`, `GetProblem`, `ListProblems` |
+| **Infrastructure** | Adapters: EF Core repos, Postgres, RabbitMQ publish/subscribe, gRPC servers/clients, OAuth. | `UserRepository`, `ProgressionProjectionHandler` | `ProblemRepository`, `ProblemGrpcService`, `SolvedCountProjectionHandler` |
 | **API / Presentation** | Transport edge: gRPC service impls, REST controllers if any, DTO mapping. Behind the API Gateway. | gRPC `UsersService` | gRPC `ProblemsService` |
 
 > The **read models** (`PlayerProgression`, `solvedCount`, per-user `ProblemStatus`) are an
@@ -126,7 +126,7 @@ PlayerProgression (read model, keyed by UserId)
 
 > If streak/achievement **rules** grow complex enough to need their own invariants and
 > consistency, promote `PlayerProgression` to a write-side aggregate later (this was option 3
-> in the design discussion). For now it stays a projection — see §7.
+> in the design discussion). For now it stays a projection.
 
 ---
 
@@ -134,49 +134,67 @@ PlayerProgression (read model, keyed by UserId)
 
 ### 5.1 `Problem` — aggregate root
 
-Owns only the authored definition.
+Owns the authored definition **and** the hidden judging data. Single consistency boundary.
 
 ```
-Problem (AggregateRoot)
-├─ ProblemId      : value object (typed ID)
-├─ Slug           : value object (unique, URL-safe)
-├─ Title          : value object
-├─ Difficulty     : enum value object (easy|medium|hard)
-├─ ScorePoints    : value object (> 0)
-├─ Tags           : set<Tag>
-├─ EstimatedTime  : value object
-├─ Statement      : value object { description, notes[], inputFormat[], constraints[] }
-└─ Examples       : list<Example>   ← PUBLIC sample I/O (value objects)
-                     Example { input, output, explanation? }
+Problem (AggregateRoot<ProblemId>)
+├─ ProblemId          : strongly-typed ID (shared kernel)
+├─ Slug               : Slug (VO — immutable after creation)
+├─ Title              : string
+├─ Difficulty         : Difficulty (enum: Easy | Medium | Hard)
+├─ Points             : int (> 0)
+├─ EstimatedMinutes   : int (> 0)
+├─ Tags               : IReadOnlySet<Tag>  (Tag = validated string VO)
+├─ Description        : string
+├─ Notes              : IReadOnlyList<string>
+├─ InputFormat        : IReadOnlyList<string>
+├─ Constraints        : IReadOnlyList<string>
+├─ Examples           : IReadOnlyList<Example>   ← PUBLIC sample I/O (≥ 1)
+│                        Example { input, output, explanation? }
+├─ TestCases          : IReadOnlyList<TestCase>  ← HIDDEN, Runner only
+│                        TestCase { input, expectedOutput, isHidden }
+└─ IsPublished        : bool (false at creation)
 ```
 
 **Invariants:**
-- `Slug` is unique and URL-safe.
-- `ScorePoints > 0`.
-- At least one `Example`.
+- `Slug` is unique and URL-safe. Derived from `Title` at creation; immutable after.
+- `Points > 0`.
+- `EstimatedMinutes > 0`.
+- At least one `Example` (enforced by `SetExamples`).
+- `Publish()` requires `TestCases.Any()`.
 
-**Domain events:** `ProblemCreated`, `ProblemEdited`.
+**Factory & methods:**
+- `Problem.Create(slug, title, difficulty, points, estimatedMinutes, tags, description, notes, inputFormat, constraints, examples)` — `IsPublished = false`.
+- `problem.Edit(title, difficulty, points, estimatedMinutes, tags, description, notes, inputFormat, constraints)` — free edit, no domain event.
+- `problem.SetExamples(IReadOnlyList<Example>)` — wholesale replace, validates ≥ 1.
+- `problem.SetTestCases(IReadOnlyList<TestCase>)` — wholesale replace, no minimum.
+- `problem.Publish()` — guards `TestCases.Any()`, raises `ProblemPublished`.
 
-### 5.2 `TestSuite` — separate aggregate (same BC)
+**Domain events emitted:** `ProblemCreated`, `ProblemPublished`.
 
-Hidden judging data. Kept out of `Problem` because it is large, hidden, and changes on a
-different cadence — bloating the Problem aggregate with it would couple authoring to test data.
+> `ProblemEdited` is deferred — no downstream consumer exists yet. Add when a real consumer
+> (e.g. search index invalidation) is introduced.
 
-```
-TestSuite (AggregateRoot, linked by ProblemId)
-├─ TestSuiteId : value object
-├─ ProblemId   : foreign reference (same BC)
-└─ Cases       : list<TestCase>
-                  TestCase { input, expectedOutput, weight?, isHidden }
-```
+**Authorship:** Admin-only operation (enforced at Application layer). No `CreatedBy` field on the aggregate.
 
-- Loaded **only** by the Runner/Submission flow via gRPC (`GetTestSuite(problemId)`).
-- Never serialized to the public API.
+**NOT in Problem:** `solvedCount` (read model), `status` (per-user projection owned by Submission BC).
+
+### 5.2 `TestSuite` — removed as separate aggregate
+
+`TestSuite` was merged into `Problem`. Rationale: it had no invariants of its own, no separate
+lifecycle, and keeping it separate only introduced a co-creation coordination problem without
+DDD benefit. `TestCases` are now a collection directly on `Problem`, loaded explicitly (never
+auto-included in public queries).
+
+The gRPC method `GetTestSuite(problemId)` still exists at the API layer — it loads `Problem`
+with `TestCases` via explicit include and returns the hidden cases to the Runner.
 
 ### 5.3 `solvedCount` & per-user `ProblemStatus` — read-side
 
-- `solvedCount`: read-model counter per problem, incremented by a handler subscribed to
-  `SubmissionEvaluated` (verdict = accepted, first solve by that user). Never on the write model.
+- `solvedCount`: read-model counter per problem, incremented by `SolvedCountProjectionHandler`
+  subscribed to `SubmissionEvaluated` (verdict = accepted). Deduped by `(userId, problemId)` —
+  a `PROBLEM_FIRST_SOLVE` table (unique constraint on the pair) prevents double-counting on
+  event redelivery.
 - `ProblemStatus` (`start`/`continue`/`review`): a **per-(user, problem)** projection. Authority
   is the Submission context. The BFF/API composes it onto the problem list per requesting user.
 
@@ -199,7 +217,7 @@ SubmissionEvaluatedV1 {
 }
 ```
 - Consumed by **Users BC** → updates `PlayerProgression`.
-- Consumed by **Problems BC** → updates `solvedCount`.
+- Consumed by **Problems BC** → updates `solvedCount` (deduped via `PROBLEM_FIRST_SOLVE`).
 - Each consumer applies an **ACL**: translate the event into its own terms; never depend on
   Submission's internal model.
 
@@ -225,23 +243,19 @@ code-sprint-shared/
 └─ Contracts/       Integration-event DTOs (SubmissionEvaluatedV1, ...) — versioned
 ```
 
-> Each BC defines its **own** `User` / `Problem` domain types internally. If `Difficulty` or
-> another enum ever needs to be shared, that's the *only* kind of domain concept allowed up here
-> — and only if no context wants to diverge.
+> Each BC defines its **own** domain types internally. `Difficulty` stays in the Problems BC —
+> no other context needs it.
 
 ---
 
-## 8. What you're missing / gaps to close
+## 8. Remaining gaps
 
 1. **No User domain model exists yet** — only profile UI. The `User` aggregate above is net-new.
-2. **`solvedCount` was on the write model** — make it a projection or it will lie/contend.
-3. **`status` leaked into Problem** — it's per-user; move composition to the BFF.
-4. **No `TestSuite`** — the Runner has nothing to judge against; only public `examples` exist.
-5. **No idempotency story for event consumers** — `SubmissionEvaluated` can be redelivered;
-   projection handlers must dedupe (e.g. by `submissionId`).
-6. **Rank computation** — global ranking from points is expensive; decide windowed/scheduled
+2. **`status` leaked into Problem** — it's per-user; move composition to the BFF.
+3. **No idempotency story for `PlayerProgression` handler** — `SubmissionEvaluated` can be
+   redelivered; Users BC projection handler needs its own dedupe mechanism (by `submissionId`).
+4. **Rank computation** — global ranking from points is expensive; decide windowed/scheduled
    recompute vs. on-read. (Deferred, but flagged.)
-7. **Verdict integrity vs. editable problems** — see §9.
 
 ---
 
@@ -249,17 +263,23 @@ code-sprint-shared/
 
 | Decision | Choice | Risk accepted |
 |---|---|---|
-| **Problem lifecycle / versioning** | **Deferred.** Problems are always-published and freely editable for now. | Editing constraints or test cases after submissions exist retroactively invalidates past verdicts. No invariant guards this yet. Revisit before launch / before problems are user-facing-stable. |
+| **Verdict integrity vs. editable problems** | Free edit always. | Editing test cases or constraints after submissions exist retroactively invalidates past verdicts. No invariant guards this. Revisit before problems are user-facing-stable. |
 | **PlayerProgression as projection vs. aggregate** | Projection for now. | If streak/achievement rules need their own invariants, promote to write-side aggregate. |
+| **`ProblemEdited` domain event** | Deferred. | No downstream consumer yet. Add with specific payload when a real consumer (search index, audit log) is introduced. |
 
 ---
 
 ## 10. Glossary
 
-- **Problem** — an authored coding challenge: statement, constraints, scoring, public examples.
-  Does *not* include hidden test data or any per-user state.
-- **TestSuite** — the hidden set of `TestCase`s the Runner grades a submission against.
-- **Example** — a *public* sample input/output pair shown in the UI.
+- **Problem** — an authored coding challenge: statement, constraints, scoring, public examples,
+  and hidden test cases. Does *not* include any per-user state.
+- **TestCase** — a hidden input/expected-output pair the Runner grades a submission against.
+  Lives inside the `Problem` aggregate; never serialized to the public API.
+- **Example** — a *public* sample input/output pair shown in the UI. Distinct from `TestCase`.
+- **Slug** — the unique, URL-safe identifier for a Problem (e.g. `"two-sum"`). Derived from
+  title at creation; immutable after.
+- **Tag** — a free-form category label on a Problem (e.g. `"Strings"`). Open taxonomy;
+  valid values enforced at the Application layer, not the domain.
 - **User** — an identity/account: email, handle, display name, auth identities. No stats.
 - **PlayerProgression** — the derived, read-only view of a user's standing (points, rank,
   streak, tier, achievements, heatmap, categories), computed from submission events.

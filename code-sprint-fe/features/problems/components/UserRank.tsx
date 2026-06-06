@@ -2,6 +2,7 @@ import { StatItem } from "@/components/ui/StatItem";
 
 export function UserRank() {
   // TODO: Implement serach BAR
+  // TODO: Update value froms the client....
 
   return (
     <div className="m-2 flex flex-col gap-2 rounded-lg bg-white p-2">

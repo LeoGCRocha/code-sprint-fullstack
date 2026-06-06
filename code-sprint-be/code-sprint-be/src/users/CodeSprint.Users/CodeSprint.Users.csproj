@@ -6,14 +6,15 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <PackageId>CodeSprint.Users</PackageId>
-    </PropertyGroup>
+      <UserSecretsId>aad18ca7-d3b2-4705-9e98-272e31da9d10</UserSecretsId>
+  </PropertyGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\..\shared\CodeSprint.Shared\CodeSprint.Shared.csproj" />
+      <ProjectReference Include="..\..\aspire\CodeSprint.ServiceDefaults\CodeSprint.ServiceDefaults.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.8" />
       <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.8" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.8">
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

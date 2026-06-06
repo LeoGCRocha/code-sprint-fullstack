@@ -1,7 +1,6 @@
 using CodeSprint.Users.API;
 using CodeSprint.Users.API.Endpoints.Me;
 using CodeSprint.Users.Infrastructure;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,17 +11,8 @@ builder.Services.AddDbContext<UsersDbContext>(options =>
 
 services.AddHttpClient();
 
-services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(options =>
-{
-    options.Authority = builder.Configuration["Auth0:Authority"];
-    options.Audience  = builder.Configuration["Auth0:Audience"];
-    options.MapInboundClaims = false;
-});
-services.AddAuthorization();
+// Auth0 JWT authentication + authorization, centralized in ServiceDefaults.
+builder.AddCodeSprintAuth();
 
 const string frontendCors = "frontend";
 services.AddCors(options =>

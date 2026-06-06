@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { Footer } from "@/components/layout/Footer";
 import { getCurrentUser } from "@/services/users";
 import { UserProvider } from "@/provider/UserProvider";
 import { ServerErrorOverlay } from "@/components/layout/ServerErrorOverlay";

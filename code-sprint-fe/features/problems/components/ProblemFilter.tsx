@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import type { FilterDifficulty } from "../types";
 
 const filters: { label: string; value: FilterDifficulty }[] = [
@@ -10,17 +9,22 @@ const filters: { label: string; value: FilterDifficulty }[] = [
   { label: "Hard", value: "hard" },
 ];
 
-export function ProblemFilter() {
-  const [selection, setSelection] = useState<FilterDifficulty>("all");
+export type ProblemFilterProps = {
+  onClick: (value: FilterDifficulty) => void;
+  selection?: FilterDifficulty | undefined;
+};
 
+export function ProblemFilter({ onClick, selection = "all" }: ProblemFilterProps) {
   return (
     <div className="mb-4 flex flex-row flex-wrap gap-1">
       {filters.map(({ label, value }) => (
         <button
           key={value}
-          onClick={() => setSelection(value)}
+          onClick={() => onClick(value)}
           className={`cursor-pointer rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
-            selection === value ? "bg-primary-600 text-white" : "bg-neutral-100 text-neutral-700 hover:bg-neutral-200"
+            selection === value
+              ? "bg-primary-600 text-white"
+              : "bg-neutral-100 text-neutral-700 hover:bg-neutral-200"
           }`}
         >
           {label}

@@ -2,6 +2,8 @@ namespace CodeSprint.Problems.API.Endpoints.Problems;
 
 public record ExampleResponse(string Input, string Output, string? Explanation);
 
+public record PagedResponse<T>(List<T> Items, int Total, int Page, int PageSize);
+
 public record ProblemResponse(
     string Id,
     string Slug,
