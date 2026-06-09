@@ -94,7 +94,39 @@ erDiagram
         timestamptz solved_at
     }
 
-%% ============ SUBMISSION BC (out of scope, shown for refs) ============
+%% ============ SUBMISSIONS BC (schema: submissions) ============
+    SUBMISSION ||--o| EVALUATION : "judged as (owned)"
+    EVALUATION ||--o{ SUBMISSION_TEST_RESULT : "per test (owned)"
+
+    SUBMISSION {
+        uuid submission_id PK
+        uuid user_id "FK-by-id -> users.USER (NO db FK)"
+        uuid problem_id "FK-by-id -> problems.PROBLEM (NO db FK)"
+        string language "Python|JavaScript|TypeScript|Cpp|Java|CSharp|Go"
+        text source_code "<= 64KB"
+        string status "Pending|Running|Completed|Failed"
+        timestamptz submitted_at
+        string failure_reason "nullable, set on Failed (judge infra error)"
+    }
+    EVALUATION {
+        uuid submission_id PK "= SUBMISSION.submission_id (owned, table-split, null until Completed)"
+        string verdict "Accepted|WrongAnswer|RuntimeError|TimeLimitExceeded|MemoryLimitExceeded|CompileError"
+        int points_awarded "full points only on user's first accepted solve"
+        int runtime_ms "worst case across tests"
+        int memory_kb "peak across tests"
+        timestamptz evaluated_at
+    }
+    SUBMISSION_TEST_RESULT {
+        uuid submission_id FK
+        int ordinal PK "1..N"
+        string status "Passed|Failed|Errored|TimedOut"
+        int runtime_ms
+        int memory_kb
+        bool is_hidden
+        text actual_output "nullable; null when is_hidden (I/O never stored)"
+    }
+
+%% ============ UI READ MODEL (cross-BC, derived — out of scope) ============
     USER_PROBLEM_STATUS {
         uuid user_id "FK-by-id -> users.USER (NO db FK)"
         uuid problem_id "FK-by-id -> problems.PROBLEM (NO db FK)"

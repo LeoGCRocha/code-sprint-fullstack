@@ -73,8 +73,8 @@ export function Heatmap() {
       <h3 className="font-bold">Submission Activity</h3>
       <p className="mb-4 text-sm text-neutral-400">{total} submissions · Last year</p>
 
-      <div className="overflow-x-auto md:overflow-visible">
-        <div className="flex gap-1 md:justify-center">
+      <div className="w-full overflow-x-auto">
+        <div className="flex gap-1">
           {weeks.map((week, wi) => (
             <div key={wi} className="flex flex-col gap-1">
               {week.map((day, di) =>

@@ -6,6 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.AddServiceDefaults();
 builder.AddCodeSprintAuth();
 
+// TODO: Validate this....
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("authenticated", p => p.RequireAuthenticatedUser());

@@ -10,8 +10,7 @@ import { Button } from "../ui/Button";
 const navLinks = [
   { label: "Problems", href: "/problems" },
   { label: "Competitions", href: "/competitions" },
-  { label: "Submit", href: "/submit" },
-  { label: "Profile", href: "/profile" },
+  { label: "Profile", href: "/profile/me" },
 ] as const;
 
 type NavHref = (typeof navLinks)[number]["href"];
@@ -75,14 +74,14 @@ function UserMenu({ displayName, avatar }: { displayName: string; avatar: string
       </button>
 
       {open && (
-        <div className="border-border bg-surface absolute right-0 top-full z-50 mt-2 w-44 rounded-xl border py-1 shadow-md">
+        <div className="border-border bg-surface absolute top-full right-0 z-50 mt-2 w-44 rounded-xl border py-1 shadow-md">
           <div className="border-border border-b px-4 py-2.5">
             <p className="text-text-primary truncate text-sm font-semibold">{displayName}</p>
           </div>
           <Link
-            href="/profile"
+            href="/profile/me"
             onClick={() => setOpen(false)}
-            className="text-text-secondary hover:text-text-primary hover:bg-neutral-50 block px-4 py-2 text-sm transition-colors"
+            className="text-text-secondary hover:text-text-primary block px-4 py-2 text-sm transition-colors hover:bg-neutral-50"
           >
             Profile
           </Link>
