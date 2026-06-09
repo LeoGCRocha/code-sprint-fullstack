@@ -1,5 +1,6 @@
 import { http, HttpResponse, delay } from "msw";
 import { mockProblems } from "./data/problems";
+import { mockSubmissionAck, mockSubmissionResponse } from "./data/submission";
 
 export const handlers = [
   // Regex ignores host/port — matches the gateway path `${NEXT_PUBLIC_API_URL}/api/problems`
@@ -35,5 +36,15 @@ export const handlers = [
 
     if (!problem) return new HttpResponse(null, { status: 404 });
     return HttpResponse.json(problem);
+  }),
+
+  http.post(/\/api\/submissions$/, async () => {
+    await delay(600);
+    return HttpResponse.json(mockSubmissionAck, { status: 202 });
+  }),
+
+  http.get(/\/api\/submissions\/([^/]+)$/, async () => {
+    await delay(200);
+    return HttpResponse.json(mockSubmissionResponse);
   }),
 ];

@@ -52,7 +52,7 @@ export default async function Solution({ params }: { params: Promise<{ slug: str
       </aside>
 
       <div className="mt-4 flex flex-1 flex-col overflow-hidden md:mt-0 md:p-4">
-        <CodeSolutionPanel fillHeight />
+        <CodeSolutionPanel fillHeight problemId={problem.id} />
       </div>
     </div>
   );

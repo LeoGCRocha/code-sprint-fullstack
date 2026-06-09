@@ -4,10 +4,11 @@ import { useState } from "react";
 import dynamic from "next/dynamic";
 import { Button } from "@/components/ui/Button";
 import { ChevronDownIcon, SendIcon } from "lucide-react";
+import { useSubmit } from "@/features/submission/hooks/useSubmit";
 
 const CodeSolution = dynamic(
   () => import("./CodeSolution").then((m) => ({ default: m.CodeSolution })),
-  { ssr: false, loading: () => <div className="flex-1 bg-neutral-900" /> },
+  { ssr: false, loading: () => <div className="flex-1 bg-neutral-900" /> }
 );
 
 const languages = [
@@ -18,11 +19,13 @@ const languages = [
 
 interface CodeSolutionPanelProps {
   fillHeight?: boolean;
+  problemId: string;
 }
 
-export function CodeSolutionPanel({ fillHeight = false }: CodeSolutionPanelProps) {
+export function CodeSolutionPanel({ fillHeight = false, problemId }: CodeSolutionPanelProps) {
   const [language, setLanguage] = useState(languages[0]);
   const [code, setCode] = useState("");
+  const { mutate, isPending } = useSubmit();
 
   return (
     <div className={fillHeight ? "flex h-full flex-col" : "flex flex-col"}>
@@ -36,7 +39,9 @@ export function CodeSolutionPanel({ fillHeight = false }: CodeSolutionPanelProps
             className="cursor-pointer appearance-none rounded-lg bg-neutral-600 px-3 py-1 text-sm text-white"
           >
             {languages.map((l) => (
-              <option key={l.value} value={l.value}>{l.label}</option>
+              <option key={l.value} value={l.value}>
+                {l.label}
+              </option>
             ))}
           </select>
           <ChevronDownIcon className="pointer-events-none absolute top-1/2 right-2 h-3 w-3 -translate-y-1/2 text-white" />
@@ -53,15 +58,15 @@ export function CodeSolutionPanel({ fillHeight = false }: CodeSolutionPanelProps
           />
         </div>
       ) : (
-        <CodeSolution
-          language={language.monacoId}
-          value={code}
-          onChange={setCode}
-        />
+        <CodeSolution language={language.monacoId} value={code} onChange={setCode} />
       )}
 
-      <Button className="mt-2 flex shrink-0 items-center justify-center gap-2 p-4">
-        <SendIcon /> Submit Solution
+      <Button
+        className="mt-2 flex shrink-0 items-center justify-center gap-2 p-4"
+        disabled={isPending}
+        onClick={() => mutate({ problemId, language: language.value, sourceCode: code })}
+      >
+        <SendIcon /> {isPending ? "Submitting..." : "Submit Solution"}
       </Button>
     </div>
   );
