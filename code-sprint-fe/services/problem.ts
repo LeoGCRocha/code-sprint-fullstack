@@ -26,6 +26,17 @@ export interface ProblemsFilter {
   pageSize?: number;
 }
 
+export async function fetchProblemBySlug(slug: string): Promise<Problem | null> {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/problems/${encodeURIComponent(slug)}`, {
+    cache: "no-store",
+  });
+
+  if (res.status === 404) return null;
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+  return res.json();
+}
+
 export async function fetchProblems(filter: ProblemsFilter): Promise<ProblemsPage> {
   const params = new URLSearchParams();
   if (filter.difficulty) params.set("difficulty", filter.difficulty);

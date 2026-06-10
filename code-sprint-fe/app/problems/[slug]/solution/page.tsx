@@ -1,21 +1,20 @@
-// TODO(BE): Wire solution page to real API:
-// - Fetch problem by slug from GET /problems/:slug (replace local mock)
-// - CodeSolutionPanel "Submit Solution" button should POST /submissions with { problemSlug, language, code }
-// - After submit, redirect to /submissions/:id with the returned submission ID
-// - time/memory limits should come from the problem data, not be hardcoded
 import { Badge } from "@/components/ui/Badge";
 import { Container } from "@/components/ui/Container";
 import { StatItem } from "@/components/ui/StatItem";
 import { CodeSolutionPanel } from "@/features/problems/components/CodeSolutionPanel";
-import { problems } from "@/features/problems/data";
+import { fetchProblemBySlug } from "@/services/problem";
+import { getCurrentUser } from "@/services/users";
 import { ChevronLeftIcon } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
 export default async function Solution({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const problem = problems.find((p) => p.slug === slug);
+  const problem = await fetchProblemBySlug(slug);
   if (!problem) return notFound();
+
+  const user = await getCurrentUser();
+  const userId = user.state === "ok" ? user.user.id : undefined;
 
   const difficultyVariant = {
     easy: "green",
@@ -52,7 +51,7 @@ export default async function Solution({ params }: { params: Promise<{ slug: str
       </aside>
 
       <div className="mt-4 flex flex-1 flex-col overflow-hidden md:mt-0 md:p-4">
-        <CodeSolutionPanel fillHeight problemId={problem.id} />
+        <CodeSolutionPanel fillHeight problemId={problem.id} userId={userId} />
       </div>
     </div>
   );

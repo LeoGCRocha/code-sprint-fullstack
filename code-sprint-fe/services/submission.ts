@@ -9,6 +9,35 @@ export interface CreateSubmissionResult {
   status: string;
 }
 
+export type SubmissionStatus = "pending" | "running" | "completed" | "failed";
+
+export interface TestCaseResult {
+  ordinal: number;
+  status: string;
+  runtimeMs: number;
+  memoryKb: number;
+  isHidden: boolean;
+  actualOutput: string | null;
+}
+
+export interface SubmissionEvaluation {
+  verdict: string;
+  pointsAwarded: number;
+  runtimeMs: number;
+  memoryKb: number;
+  evaluatedAt: string;
+  results: TestCaseResult[];
+}
+
+export interface Submission {
+  id: string;
+  problemId: string;
+  language: string;
+  status: SubmissionStatus;
+  submittedAt: string;
+  evaluation: SubmissionEvaluation | null;
+}
+
 export async function createSubmission(
   input: CreateSubmissionInput
 ): Promise<CreateSubmissionResult> {
@@ -24,7 +53,7 @@ export async function createSubmission(
 }
 
 // TODO: Create the web-sockets params
-export async function getSubmission(id: string) {
+export async function getSubmission(id: string): Promise<Submission> {
   const res = await fetch(`/api/submissions/${id}`);
   if (!res.ok) throw new Error(`getSubmission failed: HTTP ${res.status}`);
   return res.json();

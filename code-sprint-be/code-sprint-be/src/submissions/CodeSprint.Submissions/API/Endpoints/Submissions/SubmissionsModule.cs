@@ -30,6 +30,7 @@ public static class SubmissionsModule
         CancellationToken ct)
     {
         // The caller's Users-BC id is resolved cross-context (sub claim != UserId).
+        // TODO: Change this to use gRPC instead
         var userId = await usersApi.GetCurrentUserIdAsync(ct);
         if (userId is null)
             return Results.StatusCode(StatusCodes.Status502BadGateway);

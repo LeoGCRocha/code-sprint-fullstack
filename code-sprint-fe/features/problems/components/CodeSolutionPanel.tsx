@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import { Button } from "@/components/ui/Button";
 import { ChevronDownIcon, SendIcon } from "lucide-react";
 import { useSubmit } from "@/features/submission/hooks/useSubmit";
+import { useDraft } from "@/features/submission/hooks/useDraft";
 
 const CodeSolution = dynamic(
   () => import("./CodeSolution").then((m) => ({ default: m.CodeSolution })),
@@ -12,7 +13,7 @@ const CodeSolution = dynamic(
 );
 
 const languages = [
-  { label: "Python 3", value: "python3", monacoId: "python" },
+  { label: "Python 3", value: "python", monacoId: "python" },
   { label: "JavaScript", value: "javascript", monacoId: "javascript" },
   { label: "C++", value: "cpp", monacoId: "cpp" },
 ];
@@ -20,12 +21,19 @@ const languages = [
 interface CodeSolutionPanelProps {
   fillHeight?: boolean;
   problemId: string;
+  userId?: string;
 }
 
-export function CodeSolutionPanel({ fillHeight = false, problemId }: CodeSolutionPanelProps) {
+export function CodeSolutionPanel({
+  fillHeight = false,
+  problemId,
+  userId,
+}: CodeSolutionPanelProps) {
   const [language, setLanguage] = useState(languages[0]);
-  const [code, setCode] = useState("");
-  const { mutate, isPending } = useSubmit();
+  const { code, setCode, clearDraft } = useDraft(problemId, userId);
+  const { mutate, isPending } = useSubmit({
+    onSuccess: clearDraft,
+  });
 
   return (
     <div className={fillHeight ? "flex h-full flex-col" : "flex flex-col"}>
