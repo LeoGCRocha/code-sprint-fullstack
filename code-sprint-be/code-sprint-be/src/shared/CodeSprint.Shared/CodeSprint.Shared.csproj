@@ -9,4 +9,11 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+        <!-- Required by the reusable outbox EF mapping (OutboxMessageConfiguration,
+             OutboxModelExtensions). Relational mapping APIs (ToTable, HasColumnName,
+             HasColumnType) — provider-agnostic, no Npgsql dependency. -->
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="10.0.8" />
+    </ItemGroup>
+
 </Project>

@@ -14,6 +14,9 @@ services.AddHttpClient();
 // Auth0 JWT authentication + authorization, centralized in ServiceDefaults.
 builder.AddCodeSprintAuth();
 
+// RabbitMQ client + IIntegrationEventPublisher transport (consumer reads from here).
+builder.AddCodeSprintMessaging();
+
 const string frontendCors = "frontend";
 services.AddCors(options =>
 {

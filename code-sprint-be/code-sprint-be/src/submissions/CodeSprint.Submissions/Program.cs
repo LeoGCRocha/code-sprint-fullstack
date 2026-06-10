@@ -8,6 +8,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Service discovery (resolves http://users-api), telemetry, health checks.
 builder.AddServiceDefaults();
 
+// RabbitMQ client + IIntegrationEventPublisher transport (publishes the outbox).
+builder.AddCodeSprintMessaging();
+
 builder.Services.ConfigureHttpJsonOptions(o =>
     o.SerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase);
 
