@@ -4,16 +4,12 @@ interface Stat {
   dark?: boolean;
 }
 
-const stats: Stat[] = [
-  { value: "342", label: "Solved" },
-  { value: "#1,204", label: "Rank" },
-  { value: "47", label: "Streak" },
-  { value: "28", label: "Contests", dark: true },
-];
+export type StatsBarProps = {
+  stats: Stat[];
+};
 
-export function StatsBar() {
+export function StatsBar({ stats }: StatsBarProps) {
   return (
-    // TODO: Load from the backend
     <div className="flex rounded-2xl bg-white">
       {stats.map((stat, i) => (
         <div

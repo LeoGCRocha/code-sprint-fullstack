@@ -4,7 +4,7 @@ import { Footer } from "@/components/layout/Footer";
 export default function SubimissionsLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <Navbar activeHref="/submit" />
+      <Navbar />
       <main className="flex-1">{children}</main>
       <Footer />
     </>

@@ -1,4 +1,6 @@
+using CodeSprint.Shared.Messaging;
 using CodeSprint.Users.Domain;
+using CodeSprint.Users.ReadModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace CodeSprint.Users.Infrastructure;
@@ -12,10 +14,15 @@ public sealed class UsersDbContext(DbContextOptions<UsersDbContext> options) : D
 {
     public DbSet<User> Users => Set<User>();
 
+    /// <summary>Consumer-side deduplication for the inbox pattern (shared mapping).</summary>
+    public DbSet<InboxMessage> InboxMessages => Set<InboxMessage>();
+    public DbSet<HeatmapDay> HeatmapDays => Set<HeatmapDay>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.HasDefaultSchema("users");
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(UsersDbContext).Assembly);
+        modelBuilder.AddInbox(); // shared inbox_messages table, into the "users" schema
 
         base.OnModelCreating(modelBuilder);
     }

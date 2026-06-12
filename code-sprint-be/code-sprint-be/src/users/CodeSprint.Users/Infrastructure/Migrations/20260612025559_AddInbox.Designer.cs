@@ -3,6 +3,7 @@ using System;
 using CodeSprint.Users.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CodeSprint.Users.Infrastructure.Migrations
 {
     [DbContext(typeof(UsersDbContext))]
-    partial class UsersDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260612025559_AddInbox")]
+    partial class AddInbox
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -84,25 +87,6 @@ namespace CodeSprint.Users.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("users", "users");
-                });
-
-            modelBuilder.Entity("CodeSprint.Users.ReadModels.HeatmapDay", b =>
-                {
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("user_id");
-
-                    b.Property<DateOnly>("Day")
-                        .HasColumnType("date")
-                        .HasColumnName("day");
-
-                    b.Property<int>("Count")
-                        .HasColumnType("integer")
-                        .HasColumnName("count");
-
-                    b.HasKey("UserId", "Day");
-
-                    b.ToTable("heatmap_days", "users");
                 });
 
             modelBuilder.Entity("CodeSprint.Users.Domain.User", b =>

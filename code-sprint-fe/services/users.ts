@@ -36,7 +36,7 @@ export async function getCurrentUser(): Promise<UserResult> {
 
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/me`, {
       headers: { Authorization: `Bearer ${token}` },
-      next: { revalidate: 60 },
+      cache: "no-store",
     });
 
     if (!res.ok) {

@@ -1,6 +1,7 @@
 using CodeSprint.Submissions.API.Endpoints.Submissions;
 using CodeSprint.Submissions.Infrastructure;
 using CodeSprint.Submissions.Infrastructure.Judge;
+using CodeSprint.Submissions.Infrastructure.Outbox;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,7 +16,8 @@ builder.Services.ConfigureHttpJsonOptions(o =>
     o.SerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase);
 
 builder.Services.AddDbContext<SubmissionsDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("submissionsdb")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("submissionsdb"))
+           .AddInterceptors(new ConvertDomainEventsToOutboxInterceptor()));
 
 // Auth0 JWT authentication + authorization, centralized in ServiceDefaults.
 builder.AddCodeSprintAuth();
@@ -28,6 +30,9 @@ builder.Services.AddHttpClient<UsersApiClient>(c => c.BaseAddress = new Uri("htt
 // In-process judge: singleton queue + background worker (Fase 1 stub, no messaging).
 builder.Services.AddSingleton<IJudgeQueue, InMemoryJudgeQueue>();
 builder.Services.AddHostedService<StubJudgeWorker>();
+
+// Transactional-outbox drain: polls outbox_messages and publishes to RabbitMQ.
+builder.Services.AddHostedService<OutboxPublisher>();
 
 var app = builder.Build();
 
